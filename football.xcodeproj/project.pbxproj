@@ -113,8 +113,8 @@
 				E6D90D1E197B309700C7EFA1 /* football */,
 				E6D90D3D197B309700C7EFA1 /* footballTests */,
 				E6D90D17197B309700C7EFA1 /* Frameworks */,
-				E6D90D16197B309700C7EFA1 /* Products */,
 				B32FF6CF8DC747D1B5C0D07D /* Pods-football.xcconfig */,
+				E6D90D16197B309700C7EFA1 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,9 +142,10 @@
 		E6D90D1E197B309700C7EFA1 /* football */ = {
 			isa = PBXGroup;
 			children = (
+				E6D90D30197B309700C7EFA1 /* Images.xcassets */,
+				E6D90D2A197B309700C7EFA1 /* Main.storyboard */,
 				E6D90D27197B309700C7EFA1 /* SCAppDelegate.h */,
 				E6D90D28197B309700C7EFA1 /* SCAppDelegate.m */,
-				E6D90D2A197B309700C7EFA1 /* Main.storyboard */,
 				E6D90D4D197B31F900C7EFA1 /* SCGamesTableViewCell.h */,
 				E6D90D4E197B31F900C7EFA1 /* SCGamesTableViewCell.m */,
 				E6D90D4F197B31F900C7EFA1 /* SCGameTableViewCell.h */,
@@ -163,7 +164,6 @@
 				E6D90D5C197B31F900C7EFA1 /* SCScrollViewContainer.m */,
 				E6D90D2D197B309700C7EFA1 /* SCViewController.h */,
 				E6D90D2E197B309700C7EFA1 /* SCViewController.m */,
-				E6D90D30197B309700C7EFA1 /* Images.xcassets */,
 				E6D90D1F197B309700C7EFA1 /* Supporting Files */,
 			);
 			path = football;

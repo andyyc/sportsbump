@@ -9,8 +9,11 @@
 #import "SCGameTableViewController.h"
 #import "SCGameTableViewCell.h"
 #import "SCHighlightViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface SCGameTableViewController ()
+
+@property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
 
 @end
 
@@ -125,7 +128,36 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
+  // [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
+  NSDictionary *play = self.summary[section][@"plays"][row];
+  NSURL *videoUrl = [NSURL URLWithString:play[@"video"]];
+  
+  _moviePlayer =  [[MPMoviePlayerController alloc] initWithContentURL:videoUrl];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(moviePlayBackDidFinish:)
+                                               name:MPMoviePlayerPlaybackDidFinishNotification
+                                             object:_moviePlayer];
+  
+  _moviePlayer.controlStyle = MPMovieControlStyleNone;
+  _moviePlayer.shouldAutoplay = YES;
+  [self.view addSubview:_moviePlayer.view];
+  [_moviePlayer setFullscreen:YES animated:YES];
+}
+
+#pragma mark - MPMoviePlayer
+
+- (void) moviePlayBackDidFinish:(NSNotification*)notification {
+  MPMoviePlayerController *player = [notification object];
+  
+  [[NSNotificationCenter defaultCenter]
+   removeObserver:self
+   name:MPMoviePlayerPlaybackDidFinishNotification
+   object:player];
+  
+  [player.view removeFromSuperview];
 }
 
 #pragma mark - Navigation

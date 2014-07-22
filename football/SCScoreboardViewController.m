@@ -12,14 +12,17 @@
 #import "SCGameViewController.h"
 #import "SCScoreboardTableViewController.h"
 
-NSString *URL_SCORES = @"http://localhost:8888/api/scores";
+NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
+NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 
 @interface SCScoreboardViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
-@property (strong, nonatomic) NSArray *dateChoices;
+@property (strong, nonatomic) NSArray *weekChoices;
+@property (strong, nonatomic) NSArray *weekChoiceIds;
 @property (strong, nonatomic) NSMutableArray *dateChoicesViews;
 @property (strong, nonatomic) SCScoreboardTableViewController *scoreboardTableViewController;
+@property (strong, nonatomic) AFHTTPRequestOperation *fetchScoreboardForDateOperation;
 
 @end
 
@@ -39,38 +42,37 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.navigationItem.title = @"Scores";
-  self.dateChoices = @[@"Week 1", @"Week 2", @"Week 3", @"Week 4"];
+//  self.dateChoices = @[@"Week 1", @"Week 2", @"Week 3"];
   self.dateChoicesViews = [[NSMutableArray alloc] init];
   
-  for (NSInteger i = 0; i < self.dateChoices.count; ++i) {
-    [self.dateChoicesViews addObject:[NSNull null]];
-  }
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_WEEK_CHOICES]];
+  AFHTTPRequestOperation *dateChoicesOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
-  if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
-    self.automaticallyAdjustsScrollViewInsets = NO;
-  }
-  
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_SCORES]];
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.scoreboardTableViewController.scores = responseObject;
-    [self.scoreboardTableViewController.tableView reloadData];
+  dateChoicesOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+  [dateChoicesOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    self.weekChoices = responseObject[@"week_choices"];
+    self.weekChoiceIds = responseObject[@"week_choice_ids"];
+    CGSize dateScrollViewSize = self.dateScrollView.frame.size;
+    self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
+    
+    for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
+      [self.dateChoicesViews addObject:[NSNull null]];
+    }
+    [self loadVisiblePages];
+    [self _fetchAndReloadScoreboardForDate:0];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);
   }];
   
-  [operation start];
+  [dateChoicesOperation start];
+  
+  if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
+    self.automaticallyAdjustsScrollViewInsets = NO;
+  }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  
-  CGSize dateScrollViewSize = self.dateScrollView.frame.size;
-  self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.dateChoices.count, dateScrollViewSize.height);
-  
-  [self loadVisiblePages];
 }
 
 #pragma mark - dateScrollView
@@ -90,7 +92,7 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
   for (NSInteger i=firstPage; i<=lastPage; i++) {
     [self loadPage:i];
   }
-  for (NSInteger i=lastPage+1; i<self.dateChoices.count; i++) {
+  for (NSInteger i=lastPage+1; i<self.weekChoices.count; i++) {
     [self purgePage:i];
   }
 }
@@ -103,7 +105,7 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
 }
 
 - (void)loadPage:(NSInteger)page {
-  if (page < 0 || page >= self.dateChoices.count) {
+  if (page < 0 || page >= self.weekChoices.count) {
     // If it's outside the range of what we have to display, then do nothing
     return;
   }
@@ -117,7 +119,7 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
     // frame = CGRectInset(frame, 20.0f, 0.0f);
     
     UILabel *newPageView = [[UILabel alloc] initWithFrame:frame];
-    newPageView.text = self.dateChoices[page];
+    newPageView.text = self.weekChoices[page];
     newPageView.textAlignment = NSTextAlignmentCenter;
     [self.dateScrollView addSubview:newPageView];
     [self.dateChoicesViews replaceObjectAtIndex:page withObject:newPageView];
@@ -125,7 +127,7 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
 }
 
 - (void)purgePage:(NSInteger)page {
-  if (page < 0 || page >= self.dateChoices.count) {
+  if (page < 0 || page >= self.weekChoices.count) {
     // If it's outside the range of what you have to display, then do nothing
     return;
   }
@@ -178,18 +180,26 @@ NSString *URL_SCORES = @"http://localhost:8888/api/scores";
 
 - (void)_fetchAndReloadScoreboardForDate:(NSInteger)date
 {
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_SCORES]];
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  NSString *dateChoiceId = self.weekChoiceIds[date];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_SCORES, dateChoiceId]]];
+  if (self.fetchScoreboardForDateOperation != nil) {
+    [self.fetchScoreboardForDateOperation cancel];
+    self.fetchScoreboardForDateOperation = nil;
+  }
   
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.scoreboardTableViewController.scores = responseObject;
-    [self.scoreboardTableViewController.tableView reloadData];
+  self.fetchScoreboardForDateOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  self.fetchScoreboardForDateOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+  
+  __weak __typeof__(self) weakSelf = self;
+  [self.fetchScoreboardForDateOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    __typeof__(self) strongSelf = weakSelf;
+    strongSelf.scoreboardTableViewController.scores = responseObject[@"scoreboard"];
+    [strongSelf.scoreboardTableViewController.tableView reloadData];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);
   }];
   
-  [operation start];
+  [self.fetchScoreboardForDateOperation start];
 }
 
 @end

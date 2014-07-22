@@ -66,7 +66,18 @@
   NSDictionary *game = self.scores[section][@"games"][row];
   
   gameCell.name.text = game[@"name"];
-  gameCell.score.text = [NSString stringWithFormat:@"%@ (%@)", game[@"score"], game[@"time"]];
+  
+  NSMutableString *gameCellScoreText = [[NSMutableString alloc] init];
+  
+  if (game[@"score"]) {
+    [gameCellScoreText appendString:game[@"score"]];
+  }
+  
+  if (game[@"time"]) {
+    [gameCellScoreText appendString:[NSString stringWithFormat:@"(%@)", game[@"time"]]];
+  }
+  
+  gameCell.score.text = gameCellScoreText;
   
   return gameCell;
 }
@@ -111,7 +122,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return self.scores[section][@"title"];
+  return [NSString stringWithFormat:@"%@ %@", self.scores[section][@"day_of_week"], self.scores[section][@"date"]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

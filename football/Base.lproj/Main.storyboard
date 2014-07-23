@@ -184,43 +184,61 @@
                                 </constraints>
                             </view>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nl6-AK-3eF">
-                                <rect key="frame" x="0.0" y="108" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="136" width="320" height="432"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="bzI-Hr-nv1" kind="embed" identifier="GameContainerToGameSummarySegue" id="wof-ka-OsV"/>
+                                    <segue destination="B8r-zW-EIw" kind="embed" identifier="GameToGameContainerSegue" id="olN-mh-lr2"/>
                                 </connections>
                             </containerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="oFG-uP-eNg">
+                                <rect key="frame" x="0.0" y="108" width="320" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="mIB-mC-nCF"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Highlights"/>
+                                    <segment title="Comments"/>
+                                </segments>
+                                <connections>
+                                    <action selector="indexChanged:" destination="qbC-GE-RVZ" eventType="valueChanged" id="SZ4-gi-ABE"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="oFG-uP-eNg" firstAttribute="leading" secondItem="U9e-YU-gDg" secondAttribute="leading" id="6iX-8C-pcT"/>
                             <constraint firstItem="nl6-AK-3eF" firstAttribute="leading" secondItem="U9e-YU-gDg" secondAttribute="leading" id="7af-t0-pM1"/>
+                            <constraint firstAttribute="trailing" secondItem="oFG-uP-eNg" secondAttribute="trailing" id="Cwt-WD-SBb"/>
                             <constraint firstItem="DIl-zZ-pSF" firstAttribute="top" secondItem="nl6-AK-3eF" secondAttribute="bottom" id="TcR-o7-QRe"/>
                             <constraint firstItem="Glr-nk-wgJ" firstAttribute="top" secondItem="NPU-uS-ZFZ" secondAttribute="bottom" id="bYk-fS-yfY"/>
                             <constraint firstItem="Glr-nk-wgJ" firstAttribute="leading" secondItem="U9e-YU-gDg" secondAttribute="leading" id="ebN-OE-ptI"/>
                             <constraint firstAttribute="trailing" secondItem="nl6-AK-3eF" secondAttribute="trailing" id="fcY-EY-gHM"/>
-                            <constraint firstItem="nl6-AK-3eF" firstAttribute="top" secondItem="Glr-nk-wgJ" secondAttribute="bottom" id="qql-Jb-CYS"/>
+                            <constraint firstItem="oFG-uP-eNg" firstAttribute="top" secondItem="Glr-nk-wgJ" secondAttribute="bottom" id="pTp-3P-Jj6"/>
                             <constraint firstAttribute="trailing" secondItem="Glr-nk-wgJ" secondAttribute="trailing" id="yzp-Xa-fsl"/>
+                            <constraint firstItem="nl6-AK-3eF" firstAttribute="top" secondItem="oFG-uP-eNg" secondAttribute="bottom" id="zvS-WD-zC2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="AAA at BBB" id="C7R-wf-T9v"/>
                     <size key="freeformSize" width="320" height="460"/>
                     <connections>
                         <outlet property="scoreLabel" destination="q7E-x7-OBe" id="MR5-bK-BGL"/>
+                        <outlet property="segmentedControl" destination="oFG-uP-eNg" id="oK4-5P-tFz"/>
                         <outlet property="timeLabel" destination="5xi-wc-HbW" id="BqU-J1-d1r"/>
                         <segue destination="5vq-ic-GAR" kind="push" identifier="PlayToHighlightSegue" id="riF-R1-3GU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YPB-Eu-dhW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4515" y="-1733"/>
+            <point key="canvasLocation" x="-4469" y="-1735"/>
         </scene>
         <!--Game Table View Controller - SEA at SFO-->
         <scene sceneID="DKa-hQ-MfF">
             <objects>
                 <tableViewController id="bzI-Hr-nv1" customClass="SCGameTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dW4-2h-L5z">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
@@ -340,7 +358,46 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KW9-bF-Wnf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4525" y="-963"/>
+            <point key="canvasLocation" x="-4613" y="-1003"/>
+        </scene>
+        <!--Container View Controller-->
+        <scene sceneID="eUi-qj-dAQ">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JUk-hC-9pU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="B8r-zW-EIw" customClass="SCContainerViewController" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="bzI-Hr-nv1" kind="custom" identifier="GameContainerToPlayByPlaySegue" customClass="SCEmptySegue" id="HTi-HX-MDi"/>
+                        <segue destination="bi5-eu-cIz" kind="custom" identifier="GameContainerToCommentsSegue" customClass="SCEmptySegue" id="vXP-7C-Tq0"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-4076" y="-1026"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Xby-gX-NNA">
+            <objects>
+                <viewController id="bi5-eu-cIz" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jhl-bE-lai"/>
+                        <viewControllerLayoutGuide type="bottom" id="FnS-04-BkK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xxR-AX-kiq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="THIS IS SOM ETEXT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ba-EK-6v7">
+                                <rect key="frame" x="81" y="170" width="158" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9CI-i0-of0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3520" y="-1038"/>
         </scene>
         <!--Navigation Controller - Games-->
         <scene sceneID="hsv-0l-9aT">

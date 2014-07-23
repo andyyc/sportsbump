@@ -10,6 +10,9 @@
 #import "SCGameTableViewCell.h"
 #import "SCHighlightViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "AFNetworking.h"
+
+NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 
 @interface SCGameTableViewController ()
 
@@ -37,6 +40,20 @@
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME_SUMMARY, self.game[@"gamekey"]]]];
+  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  
+  operation.responseSerializer = [AFJSONResponseSerializer serializer];
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSLog(@"%@", responseObject);
+    self.game = responseObject;
+    self.summary = self.game[@"summary"];
+    [self.tableView reloadData];
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
+  }];
+  
+  [operation start];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,7 +86,7 @@
   NSDictionary *play = self.summary[section][@"plays"][row];
   SCGameTableViewCell *playCell;
   
-  if (play[@"video"]) {
+  if (play[@"video"] && [(NSString *)play[@"video"] length] > 0) {
     playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCellWithVideo" forIndexPath:indexPath];
     playCell.videoLabel.text = @"🎥";
   } else {
@@ -78,7 +95,12 @@
   }
   
   playCell.timeLabel.text = play[@"time"];
-  playCell.playLabel.text = play[@"text"];
+  
+  if (play[@"down"] && [(NSString *)play[@"down"] length] > 0) {
+    playCell.playLabel.text = [NSString stringWithFormat:@"%@. %@", play[@"down"], play[@"text"]];
+  } else {
+    playCell.playLabel.text = play[@"text"];
+  }
   
   return playCell;
 }
@@ -141,7 +163,7 @@
                                                name:MPMoviePlayerPlaybackDidFinishNotification
                                              object:_moviePlayer];
   
-  _moviePlayer.controlStyle = MPMovieControlStyleNone;
+  _moviePlayer.controlStyle = MPMovieControlStyleDefault;
   _moviePlayer.shouldAutoplay = YES;
   [self.view addSubview:_moviePlayer.view];
   [_moviePlayer setFullscreen:YES animated:YES];

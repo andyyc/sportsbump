@@ -8,14 +8,14 @@
 
 #import "SCGameViewController.h"
 #import "AFNetworking.h"
-#import "SCGameTableViewController.h"
+#import "SCContainerViewController.h"
 #import "SCHighlightViewController.h"
 
-NSString *URL_GAME = @"http://localhost:8888/api/game/1";
+NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
 
 @interface SCGameViewController ()
 
-@property (strong, nonatomic) SCGameTableViewController *gameSummaryTableViewController;
+@property (strong, nonatomic)  SCContainerViewController* gameContainerViewController;
 
 @end
 
@@ -38,19 +38,21 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/1";
   self.navigationItem.title = self.game[@"name"];
   self.scoreLabel.text = self.game[@"score"];
   self.timeLabel.text = self.game[@"time"];
+  NSLog(@"%@", self.game[@"gamekey"]);
   
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_GAME]];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME, self.game[@"gamekey"]]]];
   AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSLog(@"%@", responseObject);
     self.game = responseObject;
     self.navigationItem.title = self.game[@"name"];
     self.scoreLabel.text = self.game[@"score"];
     self.timeLabel.text = self.game[@"time"];
-    self.gameSummaryTableViewController.summary = self.game[@"summary"];
-    
-    [self.gameSummaryTableViewController.tableView reloadData];
+//    self.gameSummaryTableViewController.summary = self.game[@"summary"];
+//    
+//    [self.gameSummaryTableViewController.tableView reloadData];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);
   }];
@@ -72,15 +74,25 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/1";
 {
   // Get the new view controller using [segue destinationViewController].
   // Pass the selected object to the new view controller.
-  if ([segue.identifier isEqualToString:@"GameContainerToGameSummarySegue"]) {
-    self.gameSummaryTableViewController = segue.destinationViewController;
-  } else if([[segue identifier] isEqualToString:@"PlayToHighlightSegue"]){
+  if ([segue.identifier isEqualToString:@"GameToGameContainerSegue"]) {
+    self.gameContainerViewController = segue.destinationViewController;
+    self.gameContainerViewController.game = self.game;
+  }
+  /*
+    else if([[segue identifier] isEqualToString:@"PlayToHighlightSegue"]){
     NSIndexPath *selectedRow = [self.gameSummaryTableViewController.tableView indexPathForSelectedRow];
     NSInteger section = selectedRow.section;
     NSInteger row = selectedRow.row;
     SCHighlightViewController *highlightViewController = [segue destinationViewController];
     highlightViewController.play = self.gameSummaryTableViewController.summary[section][@"plays"][row];
-  }
+  */
+}
+
+#pragma mark - UISegmentedControl
+
+-(IBAction)indexChanged:(UISegmentedControl *)sender
+{
+  [self.gameContainerViewController selectedGameSegmentIndex:self.segmentedControl.selectedSegmentIndex];
 }
 
 

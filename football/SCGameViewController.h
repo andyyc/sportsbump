@@ -13,5 +13,6 @@
 @property (strong, nonatomic) NSDictionary *game;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
 
 @end

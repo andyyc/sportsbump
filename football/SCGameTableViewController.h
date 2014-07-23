@@ -11,5 +11,6 @@
 @interface SCGameTableViewController : UITableViewController
 
 @property (nonatomic, strong) NSArray *summary;
+@property (nonatomic, strong) NSDictionary *game;
 
 @end

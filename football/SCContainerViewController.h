@@ -11,6 +11,7 @@
 @interface SCContainerViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *game;
+
 - (void)selectedGameSegmentIndex:(NSInteger)index;
 
 @end

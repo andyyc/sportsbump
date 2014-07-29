@@ -14,7 +14,9 @@
 @interface SCCommentTableViewController ()
 
 @property (strong, nonatomic) SCCommentThread *commentThread;
-@property (nonatomic, strong) SCCommentTableViewCell *dummyCell;
+@property (strong, nonatomic) SCCommentTableViewCell *dummyCell;
+@property (strong, nonatomic) SCCommentTableViewCell *dummyCellCollapsed;
+@property (strong, nonatomic) NSMutableArray *collapsedComments;
 
 @end
 
@@ -59,6 +61,12 @@
   };
   
   _commentThread = [[SCCommentThread alloc] initWithDictionary:commentThreadDictionary];
+  _collapsedComments = [[NSMutableArray alloc] init];
+  
+  for (int i=0; i<_commentThread.commentIndex.count; i++) {
+    _collapsedComments[i] = @NO;
+  }
+  
   NSLog(@"");
 }
 
@@ -79,16 +87,46 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.commentThread.commentIndex.count;;
+    return self.commentThread.commentIndex.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  SCCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+  SCCommentTableViewCell *cell = [self _reusableCellForIndexPath:indexPath];
   
   // Configure the cell...
   [self configureCell:cell forRowAtIndexPath:indexPath];
+  
+  UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
+                                           initWithTarget:self action:@selector(toggleArrowTapped:)];
+  // Specify that the gesture must be a single tap
+  tapRecognizer.numberOfTapsRequired = 1;
+  
+  // Add the tap gesture recognizer to the view
+  [cell.usernameView addGestureRecognizer:tapRecognizer];
+  
   return cell;
+}
+
+- (void)toggleArrowTapped:(UIGestureRecognizer *)gesture
+{
+  NSLog(@"tapped");
+  CGPoint location = [gesture locationInView:self.tableView];
+  NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+  
+  // self.collapsedComments[indexPath.row] = [NSNumber numberWithBool:![self.collapsedComments[indexPath.row] boolValue]];
+  NSArray *toggledIndices = [self.commentThread toggleCommentStartingAtIndex:indexPath.row
+                                                           collapsedComments:self.collapsedComments];
+  
+  NSMutableArray *toggledIndexPaths = [[NSMutableArray alloc] init];
+  
+  for (NSNumber *toggledIndex in toggledIndices) {
+    [toggledIndexPaths addObject:[NSIndexPath indexPathForRow:[toggledIndex integerValue] inSection:0]];
+  }
+  
+  [self.tableView beginUpdates];
+  [self.tableView reloadRowsAtIndexPaths:toggledIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+  [self.tableView endUpdates];
 }
 
 /*
@@ -140,38 +178,57 @@
 
 - (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSInteger row = indexPath.row;
-  
-  return [(SCComment *)self.commentThread.commentIndex[row] depth];
+  return [(SCComment *)self.commentThread.commentIndex[indexPath.row] depth];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self configureCell:self.dummyCell forRowAtIndexPath:indexPath];
-  [self.dummyCell layoutIfNeeded];
+  SCCommentTableViewCell *dummyCell = [self _dummyCellCollapsed:[self.collapsedComments[indexPath.row] boolValue]];
   
-  CGSize size = [self.dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  [self configureCell:dummyCell forRowAtIndexPath:indexPath];
+  [dummyCell layoutIfNeeded];
+  
+  CGSize size = [dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  
   return size.height+1;
 }
 
 - (void)configureCell:(SCCommentTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSInteger row = indexPath.row;
-  SCComment *comment = self.commentThread.commentIndex[row];
+  SCComment *comment = self.commentThread.commentIndex[indexPath.row];
   
-  cell.text.text = comment.text;
+  cell.commentText.text = comment.text;
   cell.username.text = comment.username;
   cell.props.text = @"1000";
   cell.toggleArrow.text = @"▾";
 }
 
-- (SCCommentTableViewCell *)dummyCell
+- (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath
 {
-  if (!_dummyCell)
-  {
-    _dummyCell = [self.tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
+  SCCommentTableViewCell *cell;
+  
+  if (![self.collapsedComments[indexPath.row] boolValue]) {
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"CommentCell" forIndexPath:indexPath];
+  } else {
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"CommentCellNoText" forIndexPath:indexPath];
   }
-  return _dummyCell;
+  
+  return cell;
+}
+
+- (SCCommentTableViewCell *)_dummyCellCollapsed:(BOOL)isCollapsed
+{
+  if (!isCollapsed) {
+    if (!_dummyCell) {
+      _dummyCell = (SCCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CommentCell"];
+    }
+    return _dummyCell;
+  } else {
+    if (!_dummyCellCollapsed) {
+      _dummyCellCollapsed = (SCCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CommentCellNoText"];
+    }
+    return _dummyCellCollapsed;
+  }
 }
 
 //- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath

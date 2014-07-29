@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSMutableDictionary *commentIdToDataMap;
 @property (strong, nonatomic) NSMutableArray *roots;
 @property (strong, nonatomic) NSMutableDictionary *edges;
+@property (strong, nonatomic) NSMutableDictionary *commentIdToCommentIndexMap;
 
 @end
 
@@ -76,6 +77,7 @@
   }];
   
   _commentIndex = [[NSMutableArray alloc] init];
+  _commentIdToCommentIndexMap = [[NSMutableDictionary alloc] init];
   [self _buildThreadRecursively:_roots depth:0];
 }
 
@@ -84,8 +86,58 @@
 {
   for (SCComment *comment in comments) {
     [_commentIndex addObject:comment];
+    self.commentIdToCommentIndexMap[comment.commentId] = [NSNumber numberWithInt:_commentIndex.count-1];
     comment.depth = depth;
     [self _buildThreadRecursively:_edges[comment.commentId] depth:depth+1];
+  }
+}
+
+- (NSArray *)toggleCommentStartingAtIndex:(NSInteger)index collapsedComments:(NSMutableArray *)collapsedComments
+{
+  NSMutableArray *toggledComments = [[NSMutableArray alloc] init];
+  
+  [self _allCommentsStartingFromComment:@[self.commentIndex[index]]
+                       commentsArrayOut:toggledComments];
+  
+  NSMutableArray *toggledIndices = [[NSMutableArray alloc] init];
+  BOOL shouldCollapse = ![collapsedComments[index] boolValue];
+
+  for (SCComment *comment in toggledComments) {
+    NSNumber *commentIndexToToggle = self.commentIdToCommentIndexMap[comment.commentId];
+    [toggledIndices addObject:commentIndexToToggle];
+    collapsedComments[[commentIndexToToggle integerValue]] = [NSNumber numberWithBool:shouldCollapse];
+  }
+  
+  return [toggledIndices copy];
+}
+
+- (void) _allCommentsStartingFromComment:(NSArray *)comments commentsArrayOut:(NSMutableArray *)commentsArrayOut
+{
+  for (SCComment *comment in comments) {
+    [commentsArrayOut addObject:comment];
+    [self _allCommentsStartingFromComment:_edges[comment.commentId] commentsArrayOut:commentsArrayOut];
+  }
+}
+
+- (void)_toggleCommentStartingAtIndex:(NSArray *)indexes
+                    collapsedComments:(NSMutableArray *)collapsedComments
+                       shouldCollapse:(BOOL)shouldCollapse
+                       toggledIndices:(NSMutableArray *)toggledIndices
+{
+  for (NSNumber *index in indexes) {
+    collapsedComments[[index intValue]] = [NSNumber numberWithBool:shouldCollapse];
+    [toggledIndices addObject:index];
+    NSArray *childComments = _edges[self.commentIndex[[index integerValue]]];
+    NSMutableArray *childIndices = [[NSMutableArray alloc] init];
+    
+    for (SCComment *comment in childComments) {
+      [childIndices addObject:self.commentIdToCommentIndexMap[comment.commentId]];
+    }
+                                    
+    [self _toggleCommentStartingAtIndex:childIndices
+                      collapsedComments:collapsedComments
+                         shouldCollapse:shouldCollapse
+                         toggledIndices:toggledIndices];
   }
 }
 

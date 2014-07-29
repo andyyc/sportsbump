@@ -128,6 +128,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E6255B391986039400C312B6 /* comments */ = {
+			isa = PBXGroup;
+			children = (
+				E6AD93E819838B110097E67A /* SCCommentTableViewController.h */,
+				E6AD93E919838B110097E67A /* SCCommentTableViewController.m */,
+				E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */,
+				E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */,
+				E6AD93F1198390660097E67A /* SCComment.h */,
+				E6AD93F2198390660097E67A /* SCComment.m */,
+				E6AD93F4198390740097E67A /* SCCommentThread.h */,
+				E6AD93F5198390740097E67A /* SCCommentThread.m */,
+				E6AD93F7198390850097E67A /* SCCommentStore.h */,
+				E6AD93F8198390850097E67A /* SCCommentStore.m */,
+			);
+			name = comments;
+			sourceTree = "<group>";
+		};
 		E6D90D0C197B309700C7EFA1 = {
 			isa = PBXGroup;
 			children = (
@@ -163,16 +180,13 @@
 		E6D90D1E197B309700C7EFA1 /* football */ = {
 			isa = PBXGroup;
 			children = (
+				E6255B391986039400C312B6 /* comments */,
 				E6D90D30197B309700C7EFA1 /* Images.xcassets */,
 				E6D90D2A197B309700C7EFA1 /* Main.storyboard */,
-				E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */,
-				E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */,
 				E61EDDBD197FA53B001A988D /* SCEmptySegue.h */,
 				E61EDDBE197FA53B001A988D /* SCEmptySegue.m */,
 				E61EDDBA197F9384001A988D /* SCContainerViewController.h */,
 				E61EDDBB197F9384001A988D /* SCContainerViewController.m */,
-				E6AD93E819838B110097E67A /* SCCommentTableViewController.h */,
-				E6AD93E919838B110097E67A /* SCCommentTableViewController.m */,
 				E6D90D27197B309700C7EFA1 /* SCAppDelegate.h */,
 				E6D90D28197B309700C7EFA1 /* SCAppDelegate.m */,
 				E6D90D4D197B31F900C7EFA1 /* SCGamesTableViewCell.h */,
@@ -194,12 +208,6 @@
 				E6D90D2D197B309700C7EFA1 /* SCViewController.h */,
 				E6D90D2E197B309700C7EFA1 /* SCViewController.m */,
 				E6D90D1F197B309700C7EFA1 /* Supporting Files */,
-				E6AD93F1198390660097E67A /* SCComment.h */,
-				E6AD93F2198390660097E67A /* SCComment.m */,
-				E6AD93F4198390740097E67A /* SCCommentThread.h */,
-				E6AD93F5198390740097E67A /* SCCommentThread.m */,
-				E6AD93F7198390850097E67A /* SCCommentStore.h */,
-				E6AD93F8198390850097E67A /* SCCommentStore.m */,
 			);
 			path = football;
 			sourceTree = "<group>";

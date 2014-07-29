@@ -18,7 +18,7 @@
 @property (strong, nonatomic) NSArray *children;
 @property (assign, nonatomic) NSInteger index;
 @property (assign, nonatomic) NSInteger depth;
-
+@property (assign, nonatomic) BOOL shouldHideCommentText;
 
 -(instancetype) initWithCommentId:(NSString *)commentId
                          username:(NSString *)username

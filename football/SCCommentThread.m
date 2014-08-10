@@ -103,6 +103,7 @@
   BOOL shouldCollapse = ![collapsedComments[index] boolValue];
 
   for (SCComment *comment in toggledComments) {
+    comment.shouldHideCommentText = shouldCollapse;
     NSNumber *commentIndexToToggle = self.commentIdToCommentIndexMap[comment.commentId];
     [toggledIndices addObject:commentIndexToToggle];
     collapsedComments[[commentIndexToToggle integerValue]] = [NSNumber numberWithBool:shouldCollapse];

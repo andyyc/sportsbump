@@ -45,7 +45,6 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSLog(@"%@", responseObject);
     self.game = responseObject;
     self.summary = self.game[@"summary"];
     [self.tableView reloadData];
@@ -67,13 +66,17 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return self.summary.count;
+  return self.summary.count > 0 ? self.summary.count : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return ((NSArray *)self.summary[section][@"plays"]).count;
+  if (self.summary.count > 0) {
+    return ((NSArray *)self.summary[section][@"plays"]).count;
+  }
+  
+  return 0;
 }
 
 
@@ -107,7 +110,11 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return self.summary[section][@"quarter"];
+  if (self.summary.count > 0) {
+    return self.summary[section][@"quarter"];
+  }
+  
+  return nil;
 }
 
 /*
@@ -148,6 +155,8 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 }
 */
 
+#pragma mark - UITableViewDelegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
@@ -168,6 +177,14 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   [self.view addSubview:_moviePlayer.view];
   [_moviePlayer setFullscreen:YES animated:YES];
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  UIView *view = [[UIView alloc] init];
+  
+  return view;
+}
+
 
 #pragma mark - MPMoviePlayer
 

@@ -10,6 +10,12 @@
 		D95A9798F7504133B66CA0A8 /* libPods-football.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 223C76AD63314C92B97251FE /* libPods-football.a */; };
 		E61EDDBC197F9384001A988D /* SCContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E61EDDBB197F9384001A988D /* SCContainerViewController.m */; };
 		E61EDDBF197FA53B001A988D /* SCEmptySegue.m in Sources */ = {isa = PBXBuildFile; fileRef = E61EDDBE197FA53B001A988D /* SCEmptySegue.m */; };
+		E6255B471987866D00C312B6 /* SCDjangoAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B461987866D00C312B6 /* SCDjangoAuthClient.m */; };
+		E6255B4B1987893900C312B6 /* SCDjangoAuthLoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B4A1987893900C312B6 /* SCDjangoAuthLoginResult.m */; };
+		E6255B4E198797CD00C312B6 /* SCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B4D198797CD00C312B6 /* SCLoginViewController.m */; };
+		E6255B51198A000100C312B6 /* SCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B50198A000100C312B6 /* SCRegisterViewController.m */; };
+		E6255B54198A08E300C312B6 /* SCDjangoRegisterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */; };
+		E6517F52198F4E1100D53FDB /* SCDjangoLoginClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -22,7 +28,6 @@
 		E6D90D25197B309700C7EFA1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D24197B309700C7EFA1 /* main.m */; };
 		E6D90D29197B309700C7EFA1 /* SCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D28197B309700C7EFA1 /* SCAppDelegate.m */; };
 		E6D90D2C197B309700C7EFA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6D90D2A197B309700C7EFA1 /* Main.storyboard */; };
-		E6D90D2F197B309700C7EFA1 /* SCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D2E197B309700C7EFA1 /* SCViewController.m */; };
 		E6D90D31197B309700C7EFA1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6D90D30197B309700C7EFA1 /* Images.xcassets */; };
 		E6D90D38197B309700C7EFA1 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6D90D37197B309700C7EFA1 /* XCTest.framework */; };
 		E6D90D39197B309700C7EFA1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6D90D18197B309700C7EFA1 /* Foundation.framework */; };
@@ -56,6 +61,18 @@
 		E61EDDBB197F9384001A988D /* SCContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCContainerViewController.m; sourceTree = "<group>"; };
 		E61EDDBD197FA53B001A988D /* SCEmptySegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCEmptySegue.h; sourceTree = "<group>"; };
 		E61EDDBE197FA53B001A988D /* SCEmptySegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCEmptySegue.m; sourceTree = "<group>"; };
+		E6255B451987866D00C312B6 /* SCDjangoAuthClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDjangoAuthClient.h; sourceTree = "<group>"; };
+		E6255B461987866D00C312B6 /* SCDjangoAuthClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoAuthClient.m; sourceTree = "<group>"; };
+		E6255B491987893900C312B6 /* SCDjangoAuthLoginResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDjangoAuthLoginResult.h; sourceTree = "<group>"; };
+		E6255B4A1987893900C312B6 /* SCDjangoAuthLoginResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoAuthLoginResult.m; sourceTree = "<group>"; };
+		E6255B4C198797CD00C312B6 /* SCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCLoginViewController.h; sourceTree = "<group>"; };
+		E6255B4D198797CD00C312B6 /* SCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCLoginViewController.m; sourceTree = "<group>"; };
+		E6255B4F198A000100C312B6 /* SCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCRegisterViewController.h; sourceTree = "<group>"; };
+		E6255B50198A000100C312B6 /* SCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCRegisterViewController.m; sourceTree = "<group>"; };
+		E6255B52198A08E300C312B6 /* SCDjangoRegisterClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDjangoRegisterClient.h; sourceTree = "<group>"; };
+		E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoRegisterClient.m; sourceTree = "<group>"; };
+		E6517F50198F4E1100D53FDB /* SCDjangoLoginClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDjangoLoginClient.h; sourceTree = "<group>"; };
+		E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoLoginClient.m; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -77,8 +94,6 @@
 		E6D90D27197B309700C7EFA1 /* SCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCAppDelegate.h; sourceTree = "<group>"; };
 		E6D90D28197B309700C7EFA1 /* SCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCAppDelegate.m; sourceTree = "<group>"; };
 		E6D90D2B197B309700C7EFA1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E6D90D2D197B309700C7EFA1 /* SCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCViewController.h; sourceTree = "<group>"; };
-		E6D90D2E197B309700C7EFA1 /* SCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCViewController.m; sourceTree = "<group>"; };
 		E6D90D30197B309700C7EFA1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E6D90D36197B309700C7EFA1 /* footballTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = footballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6D90D37197B309700C7EFA1 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -145,6 +160,25 @@
 			name = comments;
 			sourceTree = "<group>";
 		};
+		E6255B481987867900C312B6 /* auth */ = {
+			isa = PBXGroup;
+			children = (
+				E6255B451987866D00C312B6 /* SCDjangoAuthClient.h */,
+				E6255B461987866D00C312B6 /* SCDjangoAuthClient.m */,
+				E6255B491987893900C312B6 /* SCDjangoAuthLoginResult.h */,
+				E6255B4A1987893900C312B6 /* SCDjangoAuthLoginResult.m */,
+				E6255B52198A08E300C312B6 /* SCDjangoRegisterClient.h */,
+				E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */,
+				E6255B4C198797CD00C312B6 /* SCLoginViewController.h */,
+				E6255B4D198797CD00C312B6 /* SCLoginViewController.m */,
+				E6255B4F198A000100C312B6 /* SCRegisterViewController.h */,
+				E6255B50198A000100C312B6 /* SCRegisterViewController.m */,
+				E6517F50198F4E1100D53FDB /* SCDjangoLoginClient.h */,
+				E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */,
+			);
+			name = auth;
+			sourceTree = "<group>";
+		};
 		E6D90D0C197B309700C7EFA1 = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +214,7 @@
 		E6D90D1E197B309700C7EFA1 /* football */ = {
 			isa = PBXGroup;
 			children = (
+				E6255B481987867900C312B6 /* auth */,
 				E6255B391986039400C312B6 /* comments */,
 				E6D90D30197B309700C7EFA1 /* Images.xcassets */,
 				E6D90D2A197B309700C7EFA1 /* Main.storyboard */,
@@ -205,8 +240,6 @@
 				E6D90D5A197B31F900C7EFA1 /* SCScoreboardViewController.m */,
 				E6D90D5B197B31F900C7EFA1 /* SCScrollViewContainer.h */,
 				E6D90D5C197B31F900C7EFA1 /* SCScrollViewContainer.m */,
-				E6D90D2D197B309700C7EFA1 /* SCViewController.h */,
-				E6D90D2E197B309700C7EFA1 /* SCViewController.m */,
 				E6D90D1F197B309700C7EFA1 /* Supporting Files */,
 			);
 			path = football;
@@ -379,12 +412,16 @@
 			files = (
 				E6D90D62197B31F900C7EFA1 /* SCScoreboardTableViewController.m in Sources */,
 				E6D90D29197B309700C7EFA1 /* SCAppDelegate.m in Sources */,
+				E6255B54198A08E300C312B6 /* SCDjangoRegisterClient.m in Sources */,
+				E6517F52198F4E1100D53FDB /* SCDjangoLoginClient.m in Sources */,
+				E6255B471987866D00C312B6 /* SCDjangoAuthClient.m in Sources */,
+				E6255B51198A000100C312B6 /* SCRegisterViewController.m in Sources */,
 				E6D90D5F197B31F900C7EFA1 /* SCGameTableViewController.m in Sources */,
 				E6D90D60197B31F900C7EFA1 /* SCGameViewController.m in Sources */,
 				E6D90D63197B31F900C7EFA1 /* SCScoreboardViewController.m in Sources */,
 				E6D90D61197B31F900C7EFA1 /* SCHighlightViewController.m in Sources */,
-				E6D90D2F197B309700C7EFA1 /* SCViewController.m in Sources */,
 				E6AD93F9198390850097E67A /* SCCommentStore.m in Sources */,
+				E6255B4E198797CD00C312B6 /* SCLoginViewController.m in Sources */,
 				E61EDDBF197FA53B001A988D /* SCEmptySegue.m in Sources */,
 				E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */,
 				E6D90D64197B31F900C7EFA1 /* SCScrollViewContainer.m in Sources */,
@@ -392,6 +429,7 @@
 				E6D90D5E197B31F900C7EFA1 /* SCGameTableViewCell.m in Sources */,
 				E61EDDBC197F9384001A988D /* SCContainerViewController.m in Sources */,
 				E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */,
+				E6255B4B1987893900C312B6 /* SCDjangoAuthLoginResult.m in Sources */,
 				E6D90D5D197B31F900C7EFA1 /* SCGamesTableViewCell.m in Sources */,
 				E6AD93F6198390740097E67A /* SCCommentThread.m in Sources */,
 				E6AD93F3198390660097E67A /* SCComment.m in Sources */,

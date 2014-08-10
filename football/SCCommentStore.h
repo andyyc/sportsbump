@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SCCommentStore : NSObject
+@protocol SCCommentStoreDelegate<NSObject>
+
+- (void)didFetchComments:(NSDictionary *)data;
+
+@end
+
+@interface SCCommentStore : NSObject<NSURLSessionDelegate>
+
+@property (weak) id <SCCommentStoreDelegate> delegate;
+
+- (void)fetchCommentsForGameKey:(NSString *)gameKey;
 
 @end

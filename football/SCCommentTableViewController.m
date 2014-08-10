@@ -1,4 +1,4 @@
-//
+  //
 //  SCCommentTableViewController.m
 //  football
 //
@@ -10,6 +10,7 @@
 #import "SCCommentStore.h"
 #import "SCCommentThread.h"
 #import "SCCommentTableViewCell.h"
+#import "SCLoginViewController.h"
 
 @interface SCCommentTableViewController ()
 
@@ -17,6 +18,7 @@
 @property (strong, nonatomic) SCCommentTableViewCell *dummyCell;
 @property (strong, nonatomic) SCCommentTableViewCell *dummyCellCollapsed;
 @property (strong, nonatomic) NSMutableArray *collapsedComments;
+@property (strong, nonatomic) SCCommentStore *commentStore;
 
 @end
 
@@ -40,34 +42,10 @@
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-  NSDictionary *commentThreadDictionary = @{
-    @"comment_id_tree": @{
-        @"roots": @[@"1", @"2", @"3"],
-        @"edges": @{
-          @"1" : @[@"4"],
-          @"2" : @[@"5", @"6"],
-          @"5" : @[@"7"],
-        }
-    },
-    @"comment_id_to_data" : @{
-        @"1": @{@"comment_id": @"1", @"username": @"andy", @"text": @"andy's comment"},
-        @"2": @{@"comment_id": @"2", @"username": @"bob", @"text": @"bob's comment"},
-        @"3": @{@"comment_id": @"3", @"username": @"charles", @"text": @"charles's comment"},
-        @"4": @{@"comment_id": @"4", @"username": @"david", @"text": @"david's comment"},
-        @"5": @{@"comment_id": @"5", @"username": @"emily", @"text": @"emily's comment"},
-        @"6": @{@"comment_id": @"6", @"username": @"frank", @"text": @"frank's comment"},
-        @"7": @{@"comment_id": @"7", @"username": @"grace", @"text": @"grace's comment"},
-    }
-  };
   
-  _commentThread = [[SCCommentThread alloc] initWithDictionary:commentThreadDictionary];
-  _collapsedComments = [[NSMutableArray alloc] init];
-  
-  for (int i=0; i<_commentThread.commentIndex.count; i++) {
-    _collapsedComments[i] = @NO;
-  }
-  
-  NSLog(@"");
+  SCCommentStore *commentStore = [[SCCommentStore alloc] init];
+  commentStore.delegate = self;
+  [commentStore fetchCommentsForGameKey:self.game[@"gamekey"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,6 +83,9 @@
   // Add the tap gesture recognizer to the view
   [cell.usernameView addGestureRecognizer:tapRecognizer];
   
+  // Disable highlighting
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  
   return cell;
 }
 
@@ -125,7 +106,7 @@
   }
   
   [self.tableView beginUpdates];
-  [self.tableView reloadRowsAtIndexPaths:toggledIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+  [self.tableView reloadRowsAtIndexPaths:toggledIndexPaths withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
 }
 
@@ -169,6 +150,17 @@
 
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  
+  BOOL loggedIn = [userDefaults objectForKey:@"key"] != nil && [userDefaults objectForKey:@"username"] != nil;
+  
+  if (!loggedIn) {
+    [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:self];
+  }
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
   UIView *view = [[UIView alloc] init];
@@ -190,7 +182,7 @@
   
   CGSize size = [dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
   
-  return size.height+1;
+  return size.height;
 }
 
 - (void)configureCell:(SCCommentTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,8 +191,12 @@
   
   cell.commentText.text = comment.text;
   cell.username.text = comment.username;
-  cell.props.text = @"1000";
-  cell.toggleArrow.text = @"▾";
+  cell.props.text = @"1000 👊";
+  if (comment.shouldHideCommentText) {
+    cell.toggleArrow.text = @"▸";
+  } else {
+    cell.toggleArrow.text = @"▾";
+  }
 }
 
 - (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath
@@ -246,5 +242,44 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - SCCommentStoreDelegate
+
+- (void)didFetchComments:(NSDictionary *)data
+{
+  NSLog(@"data");
+  NSDictionary *commentThreadDictionary = @{
+                                            @"comment_id_tree": @{
+                                                @"roots": @[@"1", @"2", @"3", @"8", @"9", @"10", @"11"],
+                                                @"edges": @{
+                                                    @"1" : @[@"4"],
+                                                    @"2" : @[@"5", @"6"],
+                                                    @"5" : @[@"7"],
+                                                    }
+                                                },
+                                            @"comment_id_to_data" : @{
+                                                @"1": @{@"comment_id": @"1", @"username": @"andy", @"text": @"andy's comment"},
+                                                @"2": @{@"comment_id": @"2", @"username": @"bob", @"text": @"bob's comment"},
+                                                @"3": @{@"comment_id": @"3", @"username": @"charles", @"text": @"charles's comment"},
+                                                @"4": @{@"comment_id": @"4", @"username": @"david", @"text": @"david's comment"},
+                                                @"5": @{@"comment_id": @"5", @"username": @"emily", @"text": @"emily's comment"},
+                                                @"6": @{@"comment_id": @"6", @"username": @"frank", @"text": @"frank's comment"},
+                                                @"7": @{@"comment_id": @"7", @"username": @"grace", @"text": @"grace's comment"},
+                                                @"8": @{@"comment_id": @"8", @"username": @"grace", @"text": @"grace's comment"},
+                                                @"9": @{@"comment_id": @"9", @"username": @"grace", @"text": @"grace's comment"},
+                                                @"10": @{@"comment_id": @"10", @"username": @"grace", @"text": @"grace's comment"},
+                                                @"11": @{@"comment_id": @"11", @"username": @"grace", @"text": @"grace's comment"},
+                                                }
+                                            };
+  
+  _commentThread = [[SCCommentThread alloc] initWithDictionary:commentThreadDictionary];
+  _collapsedComments = [[NSMutableArray alloc] init];
+  
+  for (int i=0; i<_commentThread.commentIndex.count; i++) {
+    _collapsedComments[i] = @NO;
+  }
+  
+  [self.tableView reloadData];
+}
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "SCCommentStore.h"
+#import "SCComment.h"
 
 #define COMMENTS_URL @"http://localhost:8888/api/comments/"
 
@@ -30,16 +31,62 @@
                                     {
                                       NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
                                       NSError *responseError;
-                                      NSDictionary* jsonDict = [NSJSONSerialization
-                                                                JSONObjectWithData:data
-                                                                options:kNilOptions
-                                                                error:&responseError];
+                                      NSArray* jsonDict = [NSJSONSerialization
+                                                           JSONObjectWithData:data
+                                                           options:kNilOptions
+                                                           error:&responseError];
                                       
                                       if (!error && httpResp.statusCode == 200) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           [_delegate didFetchComments:jsonDict];
                                         });
                                       } else {
+                                      }
+                                    }];
+  
+  [dataTask resume];
+}
+
+- (void)postCommentText:(NSString *)text forPost:(NSString *)postId andParent:(SCComment *)parent
+{
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:COMMENTS_URL]];
+  [request setHTTPMethod:@"POST"];
+  NSMutableDictionary *postDictionary = [[NSMutableDictionary alloc]
+                                         initWithDictionary:@{@"text":text,
+                                                              @"post":postId,
+                                                              }];
+  if (parent.commentId) {
+    postDictionary[@"parent"] = parent.commentId;
+  }
+
+  NSError *error;
+  NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+  [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  [request setHTTPBody:postData];
+  
+  NSURLSessionDataTask *dataTask = [session
+                                    dataTaskWithRequest:request
+                                    completionHandler:^(NSData *data,
+                                                        NSURLResponse *response,
+                                                        NSError *error)
+                                    {
+                                      NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+                                      NSError *responseError;
+                                      NSDictionary* jsonDict = [NSJSONSerialization
+                                                                JSONObjectWithData:data
+                                                                options:kNilOptions
+                                                                error:&responseError];
+                                      
+                                      if (!error && httpResp.statusCode == 201) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                          [_delegate didPostComment:jsonDict];
+                                        });
+                                      } else {
+                                        // alert for error saving / updating note
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                        });
                                       }
                                     }];
   

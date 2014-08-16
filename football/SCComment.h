@@ -10,18 +10,18 @@
 
 @interface SCComment : NSObject
 
-@property (assign, nonatomic) NSString *commentId;
+@property (strong, nonatomic) NSString *commentId;
+@property (strong, nonatomic) NSString *postId;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSString *username;
-@property (strong, nonatomic) NSString *props;
+@property (strong, nonatomic) NSNumber *points;
+@property (strong, nonatomic) NSDate * created;
 @property (strong, nonatomic) SCComment *parent;
 @property (strong, nonatomic) NSArray *children;
 @property (assign, nonatomic) NSInteger index;
 @property (assign, nonatomic) NSInteger depth;
 @property (assign, nonatomic) BOOL shouldHideCommentText;
 
--(instancetype) initWithCommentId:(NSString *)commentId
-                         username:(NSString *)username
-                             text:(NSString *)text;
+-(instancetype) initWithJson:(NSDictionary *)json;
 
 @end

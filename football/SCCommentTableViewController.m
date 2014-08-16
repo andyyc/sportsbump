@@ -11,6 +11,7 @@
 #import "SCCommentThread.h"
 #import "SCCommentTableViewCell.h"
 #import "SCLoginViewController.h"
+#import "SCCommentComposerViewController.h"
 
 @interface SCCommentTableViewController ()
 
@@ -43,9 +44,13 @@
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
   
-  SCCommentStore *commentStore = [[SCCommentStore alloc] init];
-  commentStore.delegate = self;
-  [commentStore fetchCommentsForGameKey:self.game[@"gamekey"]];
+  _commentStore = [[SCCommentStore alloc] init];
+  _commentStore.delegate = self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [_commentStore fetchCommentsForGameKey:self.game[@"gamekey"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -191,7 +196,7 @@
   
   cell.commentText.text = comment.text;
   cell.username.text = comment.username;
-  cell.props.text = @"1000 👊";
+  cell.points.text = [NSString stringWithFormat:@"%@ 👊", comment.points];
   if (comment.shouldHideCommentText) {
     cell.toggleArrow.text = @"▸";
   } else {
@@ -232,7 +237,7 @@
 //  return UITableViewAutomaticDimension;
 //}
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -240,39 +245,41 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+  if ([segue.identifier isEqualToString:@"CommentToComposerSegue"]) {
+    UINavigationController *navController = [segue destinationViewController];
+    SCCommentComposerViewController *composerViewController = [navController viewControllers][0];
+    
+    if ([sender isKindOfClass:[UIButton class]]) {
+      // user tapped add comment
+      SCComment *parentCommentForGameThread = [[SCComment alloc] init];
+      parentCommentForGameThread.postId = self.game[@"post"];
+      parentCommentForGameThread.text = self.game[@"name"];
+      composerViewController.comment = parentCommentForGameThread;
+    } else {
+      NSIndexPath *selectedRow = [self.tableView indexPathForSelectedRow];
+      composerViewController.comment = self.commentThread.commentIndex[selectedRow.row];
+    }
+  }
 }
-*/
+
+#pragma mark - IBAction
+
+- (IBAction)didTapAddComment:(id)sender
+{
+  BOOL loggedIn = YES;
+  
+  if (!loggedIn) {
+    [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:sender];
+  } else {
+    [self performSegueWithIdentifier:@"CommentToComposerSegue" sender:sender];
+  }
+}
 
 #pragma mark - SCCommentStoreDelegate
 
-- (void)didFetchComments:(NSDictionary *)data
+- (void)didFetchComments:(NSArray *)data
 {
-  NSLog(@"data");
-  NSDictionary *commentThreadDictionary = @{
-                                            @"comment_id_tree": @{
-                                                @"roots": @[@"1", @"2", @"3", @"8", @"9", @"10", @"11"],
-                                                @"edges": @{
-                                                    @"1" : @[@"4"],
-                                                    @"2" : @[@"5", @"6"],
-                                                    @"5" : @[@"7"],
-                                                    }
-                                                },
-                                            @"comment_id_to_data" : @{
-                                                @"1": @{@"comment_id": @"1", @"username": @"andy", @"text": @"andy's comment"},
-                                                @"2": @{@"comment_id": @"2", @"username": @"bob", @"text": @"bob's comment"},
-                                                @"3": @{@"comment_id": @"3", @"username": @"charles", @"text": @"charles's comment"},
-                                                @"4": @{@"comment_id": @"4", @"username": @"david", @"text": @"david's comment"},
-                                                @"5": @{@"comment_id": @"5", @"username": @"emily", @"text": @"emily's comment"},
-                                                @"6": @{@"comment_id": @"6", @"username": @"frank", @"text": @"frank's comment"},
-                                                @"7": @{@"comment_id": @"7", @"username": @"grace", @"text": @"grace's comment"},
-                                                @"8": @{@"comment_id": @"8", @"username": @"grace", @"text": @"grace's comment"},
-                                                @"9": @{@"comment_id": @"9", @"username": @"grace", @"text": @"grace's comment"},
-                                                @"10": @{@"comment_id": @"10", @"username": @"grace", @"text": @"grace's comment"},
-                                                @"11": @{@"comment_id": @"11", @"username": @"grace", @"text": @"grace's comment"},
-                                                }
-                                            };
-  
-  _commentThread = [[SCCommentThread alloc] initWithDictionary:commentThreadDictionary];
+  _commentThread = [[SCCommentThread alloc] initWithArray:data];
   _collapsedComments = [[NSMutableArray alloc] init];
   
   for (int i=0; i<_commentThread.commentIndex.count; i++) {

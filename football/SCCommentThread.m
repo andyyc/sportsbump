@@ -20,10 +20,10 @@
 
 @implementation SCCommentThread
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initWithArray:(NSArray *)commentArray
 {
   if (self = [super init]) {
-    [self _buildThread:dictionary];
+    [self _buildThread:commentArray];
   }
   
   return self;
@@ -50,29 +50,33 @@
  }
  };
 */
-- (void)_buildThread:(NSDictionary *)dictionary
+- (void)_buildThread:(NSArray *)array
 {
   _commentIdToDataMap = [[NSMutableDictionary alloc] init];
-  [dictionary[@"comment_id_to_data"] enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-    SCComment *comment = [[SCComment alloc] initWithCommentId:value[@"comment_id"]
-                                                     username:value[@"username"]
-                                                         text:value[@"text"]];
-    _commentIdToDataMap[value[@"comment_id"]] = comment;
+  
+  [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL* stop) {
+    SCComment *comment = [[SCComment alloc] initWithJson:obj];
+    _commentIdToDataMap[obj[@"id"]] = comment;
   }];
   
   _roots = [[NSMutableArray alloc] init];
-  for (NSString *rootId in dictionary[@"comment_id_tree"][@"roots"]) {
-    [_roots addObject:_commentIdToDataMap[rootId]];
-  }
-  
   _edges = [[NSMutableDictionary alloc] init];
-  [dictionary[@"comment_id_tree"][@"edges"] enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
-    if(!_edges[key]) {
-      _edges[key] = [[NSMutableArray alloc] init];
-    }
+  
+  [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL* stop) {
+    NSString *commentId = obj[@"id"];
+    SCComment *comment = _commentIdToDataMap[commentId];
     
-    for (NSString *destId in value) {
-      [_edges[key] addObject:_commentIdToDataMap[destId]];
+    if (obj[@"parent"] == [NSNull null]) {
+      [_roots addObject:comment];
+    } else {
+      NSString *parentId = obj[@"parent"];
+      comment.parent = _commentIdToDataMap[parentId];
+      
+      if(!_edges[parentId]) {
+        _edges[parentId] = [[NSMutableArray alloc] init];
+      }
+      
+      [_edges[parentId] addObject:comment];
     }
   }];
   

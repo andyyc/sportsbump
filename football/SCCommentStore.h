@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class SCComment;
+
 @protocol SCCommentStoreDelegate<NSObject>
 
-- (void)didFetchComments:(NSDictionary *)data;
+@optional
+- (void)didFetchComments:(NSArray *)data;
+- (void)didPostComment:(NSDictionary *)data;
 
 @end
 
@@ -19,5 +23,7 @@
 @property (weak) id <SCCommentStoreDelegate> delegate;
 
 - (void)fetchCommentsForGameKey:(NSString *)gameKey;
+
+- (void)postCommentText:(NSString *)text forPost:(NSString *)postId andParent:(SCComment *)parent;
 
 @end

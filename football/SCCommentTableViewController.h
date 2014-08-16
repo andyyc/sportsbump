@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) NSDictionary *game;
 
-- (void)didFetchComments:(NSDictionary *)data;
+- (void)didFetchComments:(NSArray *)data;
 
 @end

@@ -16,6 +16,7 @@
 		E6255B51198A000100C312B6 /* SCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B50198A000100C312B6 /* SCRegisterViewController.m */; };
 		E6255B54198A08E300C312B6 /* SCDjangoRegisterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */; };
 		E6517F52198F4E1100D53FDB /* SCDjangoLoginClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */; };
+		E6517F551997810200D53FDB /* SCCommentComposerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F541997810200D53FDB /* SCCommentComposerViewController.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -73,6 +74,8 @@
 		E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoRegisterClient.m; sourceTree = "<group>"; };
 		E6517F50198F4E1100D53FDB /* SCDjangoLoginClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDjangoLoginClient.h; sourceTree = "<group>"; };
 		E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoLoginClient.m; sourceTree = "<group>"; };
+		E6517F531997810100D53FDB /* SCCommentComposerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentComposerViewController.h; sourceTree = "<group>"; };
+		E6517F541997810200D53FDB /* SCCommentComposerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentComposerViewController.m; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				E6AD93F5198390740097E67A /* SCCommentThread.m */,
 				E6AD93F7198390850097E67A /* SCCommentStore.h */,
 				E6AD93F8198390850097E67A /* SCCommentStore.m */,
+				E6517F531997810100D53FDB /* SCCommentComposerViewController.h */,
+				E6517F541997810200D53FDB /* SCCommentComposerViewController.m */,
 			);
 			name = comments;
 			sourceTree = "<group>";
@@ -422,6 +427,7 @@
 				E6D90D61197B31F900C7EFA1 /* SCHighlightViewController.m in Sources */,
 				E6AD93F9198390850097E67A /* SCCommentStore.m in Sources */,
 				E6255B4E198797CD00C312B6 /* SCLoginViewController.m in Sources */,
+				E6517F551997810200D53FDB /* SCCommentComposerViewController.m in Sources */,
 				E61EDDBF197FA53B001A988D /* SCEmptySegue.m in Sources */,
 				E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */,
 				E6D90D64197B31F900C7EFA1 /* SCScrollViewContainer.m in Sources */,

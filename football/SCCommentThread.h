@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) NSMutableArray *commentIndex;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithArray:(NSArray *)commentArray;
 - (NSArray *)toggleCommentStartingAtIndex:(NSInteger)index collapsedComments:(NSMutableArray *)collapsedComments;
 
 @end

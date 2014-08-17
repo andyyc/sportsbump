@@ -37,8 +37,7 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
   // Do any additional setup after loading the view.
   self.navigationItem.title = self.game.name;
   self.scoreLabel.text = self.game.score;
-//  self.timeLabel.text = self.game[@"time"];
-  NSLog(@"%@", self.game.gamekey);
+  self.timeLabel.text = @"";
   
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME, self.game.gamekey]]];
   AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -49,10 +48,7 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
     self.game = [[SCGame alloc] initWithJson:responseObject];
     self.navigationItem.title = self.game.name;
     self.scoreLabel.text = self.game.score;
-//    self.timeLabel.text = self.game[@"time"];
-//    self.gameSummaryTableViewController.summary = self.game[@"summary"];
-//    
-//    [self.gameSummaryTableViewController.tableView reloadData];
+    self.timeLabel.text = @"";
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);
   }];

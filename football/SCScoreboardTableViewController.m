@@ -117,7 +117,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return [NSString stringWithFormat:@"%@", self.scoreboard.sectionsByDate[section]];
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"eeee MMM d"];
+  NSDate *date = self.scoreboard.sectionsByDate[section];
+  return [formatter stringFromDate:date];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

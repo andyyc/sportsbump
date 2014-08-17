@@ -12,8 +12,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "AFNetworking.h"
 #import "SCGame.h"
+#import "SCPlay.h"
 
-NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
+//NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
+NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/plays/?gamekey=%@";
 
 @interface SCGameTableViewController ()
 
@@ -46,8 +48,7 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.game = [[SCGame alloc] initWithJson:responseObject];
-//    self.summary = self.game[@"summary"];
+    self.summary = [[SCGameSummary alloc] initWithJson:responseObject];
     [self.tableView reloadData];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);
@@ -67,17 +68,13 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return self.summary.count > 0 ? self.summary.count : 1;
+  return self.summary.quarters.count > 0 ? self.summary.quarters.count : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  if (self.summary.count > 0) {
-    return ((NSArray *)self.summary[section][@"plays"]).count;
-  }
-  
-  return 0;
+  return [[self.summary playsForSection:section] count];
 }
 
 
@@ -87,10 +84,10 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   long row = [indexPath row];
   long section = [indexPath section];
   
-  NSDictionary *play = self.summary[section][@"plays"][row];
+  SCPlay *play = [self.summary playsForSection:section][row];
   SCGameTableViewCell *playCell;
   
-  if (play[@"video"] && [(NSString *)play[@"video"] length] > 0) {
+  if (play.videoUrl) {
     playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCellWithVideo" forIndexPath:indexPath];
     playCell.videoLabel.text = @"🎥";
   } else {
@@ -98,12 +95,12 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
     playCell.videoLabel.text = @"";
   }
   
-  playCell.timeLabel.text = play[@"time"];
+  playCell.timeLabel.text = play.time;
   
-  if (play[@"down"] && [(NSString *)play[@"down"] length] > 0) {
-    playCell.playLabel.text = [NSString stringWithFormat:@"%@. %@", play[@"down"], play[@"text"]];
+  if (play.down && play.down.length > 0) {
+    playCell.playLabel.text = [NSString stringWithFormat:@"%@. %@", play.down, play.text];
   } else {
-    playCell.playLabel.text = play[@"text"];
+    playCell.playLabel.text = play.text;
   }
   
   return playCell;
@@ -111,8 +108,18 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  if (self.summary.count > 0) {
-    return self.summary[section][@"quarter"];
+  if (self.summary.quarters.count > 0) {
+    if ([self.summary.quarters[section] isEqualToString:@"1"]) {
+      return @"1st Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"2"]) {
+      return @"2nd Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"3"]) {
+      return @"3rd Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"4"]) {
+      return @"4th Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"5"]) {
+      return @"Overtime";
+    }
   }
   
   return nil;
@@ -163,10 +170,9 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   // [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
   NSInteger section = indexPath.section;
   NSInteger row = indexPath.row;
-  NSDictionary *play = self.summary[section][@"plays"][row];
-  NSURL *videoUrl = [NSURL URLWithString:play[@"video"]];
+  SCPlay *play = [self.summary playsForSection:section][row];
   
-  _moviePlayer =  [[MPMoviePlayerController alloc] initWithContentURL:videoUrl];
+  _moviePlayer =  [[MPMoviePlayerController alloc] initWithContentURL:play.videoUrl];
   
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(moviePlayBackDidFinish:)

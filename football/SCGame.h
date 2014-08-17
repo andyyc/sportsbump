@@ -19,6 +19,6 @@
 @property (assign, nonatomic) NSInteger gameId;
 @property (assign, nonatomic) NSInteger postId;
 
--(instancetype) initWithJson:(NSDictionary *)json;
+- (instancetype)initWithJson:(NSDictionary *)json;
 
 @end

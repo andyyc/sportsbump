@@ -203,6 +203,7 @@
   } else {
     cell.toggleArrow.text = @"▾";
   }
+  cell.timePosted.text = [comment createdTimeAgo];
 }
 
 - (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath

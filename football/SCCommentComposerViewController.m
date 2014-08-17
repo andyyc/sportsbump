@@ -33,7 +33,7 @@
   self.parentCommentPoints.text = [self.comment.points stringValue];
   self.parentCommentText.text = self.comment.text;
   self.parentCommentUsername.text =  self.comment.username;
-  self.parentCommentCreatedTime.text = @"10m ago";
+  self.parentCommentCreatedTime.text = [self.comment createdTimeAgo];
 }
 
 - (void)didReceiveMemoryWarning

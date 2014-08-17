@@ -370,7 +370,7 @@
 		E6D90D0D197B309700C7EFA1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = SBP;
+				CLASSPREFIX = SC;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = sportschub;
 				TargetAttributes = {

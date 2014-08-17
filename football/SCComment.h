@@ -22,6 +22,7 @@
 @property (assign, nonatomic) NSInteger depth;
 @property (assign, nonatomic) BOOL shouldHideCommentText;
 
--(instancetype) initWithJson:(NSDictionary *)json;
+- (instancetype)initWithJson:(NSDictionary *)json;
+- (NSString *)createdTimeAgo;
 
 @end

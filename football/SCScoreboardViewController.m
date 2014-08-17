@@ -11,6 +11,7 @@
 #import "SCScoreboardTableViewController.h"
 #import "SCGameViewController.h"
 #import "SCScoreboardTableViewController.h"
+#import "SCScoreboard.h"
 
 NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
 NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
@@ -172,7 +173,8 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
     NSInteger row = selectedRow.row;
     
     SCGameViewController *gameViewController = [segue destinationViewController];
-    gameViewController.game = [(SCScoreboardTableViewController *)sender scores][section][@"games"][row];
+    SCScoreboardTableViewController *scoreboardTableViewController = sender;
+    gameViewController.game = [scoreboardTableViewController.scoreboard gameForSection:section andRow:row];
   }
 }
 
@@ -193,7 +195,7 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
   __weak __typeof__(self) weakSelf = self;
   [self.fetchScoreboardForDateOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
     __typeof__(self) strongSelf = weakSelf;
-    strongSelf.scoreboardTableViewController.scores = responseObject[@"scoreboard"];
+    strongSelf.scoreboardTableViewController.scoreboard = [[SCScoreboard alloc] initWithGamesArray:responseObject];
     [strongSelf.scoreboardTableViewController.tableView reloadData];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);

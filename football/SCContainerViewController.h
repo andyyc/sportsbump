@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCGame.h"
 
 @interface SCContainerViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *game;
+@property (nonatomic, strong) SCGame *game;
 
 - (void)selectedGameSegmentIndex:(NSInteger)index;
 

@@ -12,6 +12,7 @@
 #import "SCCommentTableViewCell.h"
 #import "SCLoginViewController.h"
 #import "SCCommentComposerViewController.h"
+#import "SCGame.h"
 
 @interface SCCommentTableViewController ()
 
@@ -50,7 +51,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  [_commentStore fetchCommentsForGameKey:self.game[@"gamekey"]];
+  [_commentStore fetchCommentsForGameKey:self.game.gamekey];
 }
 
 - (void)didReceiveMemoryWarning
@@ -252,8 +253,8 @@
     if ([sender isKindOfClass:[UIButton class]]) {
       // user tapped add comment
       SCComment *parentCommentForGameThread = [[SCComment alloc] init];
-      parentCommentForGameThread.postId = self.game[@"post"];
-      parentCommentForGameThread.text = self.game[@"name"];
+      parentCommentForGameThread.postId = self.game.postId;
+      parentCommentForGameThread.text = self.game.name;
       composerViewController.comment = parentCommentForGameThread;
     } else {
       NSIndexPath *selectedRow = [self.tableView indexPathForSelectedRow];

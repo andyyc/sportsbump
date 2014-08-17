@@ -11,7 +11,7 @@
 @interface SCComment : NSObject
 
 @property (strong, nonatomic) NSString *commentId;
-@property (strong, nonatomic) NSString *postId;
+@property (assign, nonatomic) NSInteger postId;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSNumber *points;

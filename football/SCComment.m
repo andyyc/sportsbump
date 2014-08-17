@@ -17,7 +17,7 @@
     _username = json[@"author_name"];
     _text = json[@"text"];
     _points = json[@"points"];
-    _postId = json[@"post"];
+    _postId = [json[@"post"] integerValue];
     _created = [self _stringToDate:json[@"created_at"]];
   }
   

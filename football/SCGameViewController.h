@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCGame.h"
 
 @interface SCGameViewController : UIViewController
 
-@property (strong, nonatomic) NSDictionary *game;
+@property (strong, nonatomic) SCGame *game;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;

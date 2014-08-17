@@ -47,7 +47,7 @@
   [dataTask resume];
 }
 
-- (void)postCommentText:(NSString *)text forPost:(NSString *)postId andParent:(SCComment *)parent
+- (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent
 {
   NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
@@ -55,7 +55,7 @@
   [request setHTTPMethod:@"POST"];
   NSMutableDictionary *postDictionary = [[NSMutableDictionary alloc]
                                          initWithDictionary:@{@"text":text,
-                                                              @"post":postId,
+                                                              @"post":@(postId),
                                                               }];
   if (parent.commentId) {
     postDictionary[@"parent"] = parent.commentId;

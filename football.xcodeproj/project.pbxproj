@@ -17,6 +17,8 @@
 		E6255B54198A08E300C312B6 /* SCDjangoRegisterClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6255B53198A08E300C312B6 /* SCDjangoRegisterClient.m */; };
 		E6517F52198F4E1100D53FDB /* SCDjangoLoginClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */; };
 		E6517F551997810200D53FDB /* SCCommentComposerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F541997810200D53FDB /* SCCommentComposerViewController.m */; };
+		E6517F5919A0146000D53FDB /* SCGame.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F5819A0146000D53FDB /* SCGame.m */; };
+		E6517F5C19A018D400D53FDB /* SCScoreboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F5B19A018D400D53FDB /* SCScoreboard.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -35,7 +37,7 @@
 		E6D90D3A197B309700C7EFA1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6D90D1C197B309700C7EFA1 /* UIKit.framework */; };
 		E6D90D42197B309700C7EFA1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6D90D40197B309700C7EFA1 /* InfoPlist.strings */; };
 		E6D90D44197B309700C7EFA1 /* footballTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D43197B309700C7EFA1 /* footballTests.m */; };
-		E6D90D5D197B31F900C7EFA1 /* SCGamesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D4E197B31F900C7EFA1 /* SCGamesTableViewCell.m */; };
+		E6D90D5D197B31F900C7EFA1 /* SCScoreboardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D4E197B31F900C7EFA1 /* SCScoreboardTableViewCell.m */; };
 		E6D90D5E197B31F900C7EFA1 /* SCGameTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D50197B31F900C7EFA1 /* SCGameTableViewCell.m */; };
 		E6D90D5F197B31F900C7EFA1 /* SCGameTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D52197B31F900C7EFA1 /* SCGameTableViewController.m */; };
 		E6D90D60197B31F900C7EFA1 /* SCGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D90D54197B31F900C7EFA1 /* SCGameViewController.m */; };
@@ -76,6 +78,10 @@
 		E6517F51198F4E1100D53FDB /* SCDjangoLoginClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDjangoLoginClient.m; sourceTree = "<group>"; };
 		E6517F531997810100D53FDB /* SCCommentComposerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentComposerViewController.h; sourceTree = "<group>"; };
 		E6517F541997810200D53FDB /* SCCommentComposerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentComposerViewController.m; sourceTree = "<group>"; };
+		E6517F5719A0146000D53FDB /* SCGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGame.h; sourceTree = "<group>"; };
+		E6517F5819A0146000D53FDB /* SCGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGame.m; sourceTree = "<group>"; };
+		E6517F5A19A018D400D53FDB /* SCScoreboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCScoreboard.h; path = football/SCScoreboard.h; sourceTree = "<group>"; };
+		E6517F5B19A018D400D53FDB /* SCScoreboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCScoreboard.m; path = football/SCScoreboard.m; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -103,8 +109,8 @@
 		E6D90D3F197B309700C7EFA1 /* footballTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "footballTests-Info.plist"; sourceTree = "<group>"; };
 		E6D90D41197B309700C7EFA1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E6D90D43197B309700C7EFA1 /* footballTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = footballTests.m; sourceTree = "<group>"; };
-		E6D90D4D197B31F900C7EFA1 /* SCGamesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGamesTableViewCell.h; sourceTree = "<group>"; };
-		E6D90D4E197B31F900C7EFA1 /* SCGamesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGamesTableViewCell.m; sourceTree = "<group>"; };
+		E6D90D4D197B31F900C7EFA1 /* SCScoreboardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScoreboardTableViewCell.h; sourceTree = "<group>"; };
+		E6D90D4E197B31F900C7EFA1 /* SCScoreboardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScoreboardTableViewCell.m; sourceTree = "<group>"; };
 		E6D90D4F197B31F900C7EFA1 /* SCGameTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGameTableViewCell.h; sourceTree = "<group>"; };
 		E6D90D50197B31F900C7EFA1 /* SCGameTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGameTableViewCell.m; sourceTree = "<group>"; };
 		E6D90D51197B31F900C7EFA1 /* SCGameTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGameTableViewController.h; sourceTree = "<group>"; };
@@ -113,10 +119,10 @@
 		E6D90D54197B31F900C7EFA1 /* SCGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGameViewController.m; sourceTree = "<group>"; };
 		E6D90D55197B31F900C7EFA1 /* SCHighlightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCHighlightViewController.h; sourceTree = "<group>"; };
 		E6D90D56197B31F900C7EFA1 /* SCHighlightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCHighlightViewController.m; sourceTree = "<group>"; };
-		E6D90D57197B31F900C7EFA1 /* SCScoreboardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScoreboardTableViewController.h; sourceTree = "<group>"; };
-		E6D90D58197B31F900C7EFA1 /* SCScoreboardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScoreboardTableViewController.m; sourceTree = "<group>"; };
-		E6D90D59197B31F900C7EFA1 /* SCScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScoreboardViewController.h; sourceTree = "<group>"; };
-		E6D90D5A197B31F900C7EFA1 /* SCScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScoreboardViewController.m; sourceTree = "<group>"; };
+		E6D90D57197B31F900C7EFA1 /* SCScoreboardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCScoreboardTableViewController.h; path = football/SCScoreboardTableViewController.h; sourceTree = "<group>"; };
+		E6D90D58197B31F900C7EFA1 /* SCScoreboardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCScoreboardTableViewController.m; path = football/SCScoreboardTableViewController.m; sourceTree = "<group>"; };
+		E6D90D59197B31F900C7EFA1 /* SCScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCScoreboardViewController.h; path = football/SCScoreboardViewController.h; sourceTree = "<group>"; };
+		E6D90D5A197B31F900C7EFA1 /* SCScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCScoreboardViewController.m; path = football/SCScoreboardViewController.m; sourceTree = "<group>"; };
 		E6D90D5B197B31F900C7EFA1 /* SCScrollViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScrollViewContainer.h; sourceTree = "<group>"; };
 		E6D90D5C197B31F900C7EFA1 /* SCScrollViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScrollViewContainer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,6 +190,35 @@
 			name = auth;
 			sourceTree = "<group>";
 		};
+		E6517F5619A012FE00D53FDB /* games */ = {
+			isa = PBXGroup;
+			children = (
+				E61EDDBD197FA53B001A988D /* SCEmptySegue.h */,
+				E61EDDBE197FA53B001A988D /* SCEmptySegue.m */,
+				E6D90D5B197B31F900C7EFA1 /* SCScrollViewContainer.h */,
+				E6D90D5C197B31F900C7EFA1 /* SCScrollViewContainer.m */,
+				E6D90D53197B31F900C7EFA1 /* SCGameViewController.h */,
+				E6D90D54197B31F900C7EFA1 /* SCGameViewController.m */,
+				E6517F5719A0146000D53FDB /* SCGame.h */,
+				E6517F5819A0146000D53FDB /* SCGame.m */,
+			);
+			name = games;
+			sourceTree = "<group>";
+		};
+		E6517F5D19A12F0D00D53FDB /* scoreboard */ = {
+			isa = PBXGroup;
+			children = (
+				E6D90D57197B31F900C7EFA1 /* SCScoreboardTableViewController.h */,
+				E6D90D58197B31F900C7EFA1 /* SCScoreboardTableViewController.m */,
+				E6D90D59197B31F900C7EFA1 /* SCScoreboardViewController.h */,
+				E6D90D5A197B31F900C7EFA1 /* SCScoreboardViewController.m */,
+				E6517F5A19A018D400D53FDB /* SCScoreboard.h */,
+				E6517F5B19A018D400D53FDB /* SCScoreboard.m */,
+			);
+			name = scoreboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		E6D90D0C197B309700C7EFA1 = {
 			isa = PBXGroup;
 			children = (
@@ -221,30 +256,22 @@
 			children = (
 				E6255B481987867900C312B6 /* auth */,
 				E6255B391986039400C312B6 /* comments */,
+				E6517F5619A012FE00D53FDB /* games */,
+				E6517F5D19A12F0D00D53FDB /* scoreboard */,
 				E6D90D30197B309700C7EFA1 /* Images.xcassets */,
 				E6D90D2A197B309700C7EFA1 /* Main.storyboard */,
-				E61EDDBD197FA53B001A988D /* SCEmptySegue.h */,
-				E61EDDBE197FA53B001A988D /* SCEmptySegue.m */,
 				E61EDDBA197F9384001A988D /* SCContainerViewController.h */,
 				E61EDDBB197F9384001A988D /* SCContainerViewController.m */,
 				E6D90D27197B309700C7EFA1 /* SCAppDelegate.h */,
 				E6D90D28197B309700C7EFA1 /* SCAppDelegate.m */,
-				E6D90D4D197B31F900C7EFA1 /* SCGamesTableViewCell.h */,
-				E6D90D4E197B31F900C7EFA1 /* SCGamesTableViewCell.m */,
+				E6D90D4D197B31F900C7EFA1 /* SCScoreboardTableViewCell.h */,
+				E6D90D4E197B31F900C7EFA1 /* SCScoreboardTableViewCell.m */,
 				E6D90D4F197B31F900C7EFA1 /* SCGameTableViewCell.h */,
 				E6D90D50197B31F900C7EFA1 /* SCGameTableViewCell.m */,
 				E6D90D51197B31F900C7EFA1 /* SCGameTableViewController.h */,
 				E6D90D52197B31F900C7EFA1 /* SCGameTableViewController.m */,
-				E6D90D53197B31F900C7EFA1 /* SCGameViewController.h */,
-				E6D90D54197B31F900C7EFA1 /* SCGameViewController.m */,
 				E6D90D55197B31F900C7EFA1 /* SCHighlightViewController.h */,
 				E6D90D56197B31F900C7EFA1 /* SCHighlightViewController.m */,
-				E6D90D57197B31F900C7EFA1 /* SCScoreboardTableViewController.h */,
-				E6D90D58197B31F900C7EFA1 /* SCScoreboardTableViewController.m */,
-				E6D90D59197B31F900C7EFA1 /* SCScoreboardViewController.h */,
-				E6D90D5A197B31F900C7EFA1 /* SCScoreboardViewController.m */,
-				E6D90D5B197B31F900C7EFA1 /* SCScrollViewContainer.h */,
-				E6D90D5C197B31F900C7EFA1 /* SCScrollViewContainer.m */,
 				E6D90D1F197B309700C7EFA1 /* Supporting Files */,
 			);
 			path = football;
@@ -428,6 +455,7 @@
 				E6AD93F9198390850097E67A /* SCCommentStore.m in Sources */,
 				E6255B4E198797CD00C312B6 /* SCLoginViewController.m in Sources */,
 				E6517F551997810200D53FDB /* SCCommentComposerViewController.m in Sources */,
+				E6517F5919A0146000D53FDB /* SCGame.m in Sources */,
 				E61EDDBF197FA53B001A988D /* SCEmptySegue.m in Sources */,
 				E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */,
 				E6D90D64197B31F900C7EFA1 /* SCScrollViewContainer.m in Sources */,
@@ -435,8 +463,9 @@
 				E6D90D5E197B31F900C7EFA1 /* SCGameTableViewCell.m in Sources */,
 				E61EDDBC197F9384001A988D /* SCContainerViewController.m in Sources */,
 				E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */,
+				E6517F5C19A018D400D53FDB /* SCScoreboard.m in Sources */,
 				E6255B4B1987893900C312B6 /* SCDjangoAuthLoginResult.m in Sources */,
-				E6D90D5D197B31F900C7EFA1 /* SCGamesTableViewCell.m in Sources */,
+				E6D90D5D197B31F900C7EFA1 /* SCScoreboardTableViewCell.m in Sources */,
 				E6AD93F6198390740097E67A /* SCCommentThread.m in Sources */,
 				E6AD93F3198390660097E67A /* SCComment.m in Sources */,
 			);

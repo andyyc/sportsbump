@@ -35,21 +35,21 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
   [super viewDidLoad];
   
   // Do any additional setup after loading the view.
-  self.navigationItem.title = self.game[@"name"];
-  self.scoreLabel.text = self.game[@"score"];
-  self.timeLabel.text = self.game[@"time"];
-  NSLog(@"%@", self.game[@"gamekey"]);
+  self.navigationItem.title = self.game.name;
+  self.scoreLabel.text = self.game.score;
+//  self.timeLabel.text = self.game[@"time"];
+  NSLog(@"%@", self.game.gamekey);
   
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME, self.game[@"gamekey"]]]];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME, self.game.gamekey]]];
   AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
     NSLog(@"%@", responseObject);
-    self.game = responseObject;
-    self.navigationItem.title = self.game[@"name"];
-    self.scoreLabel.text = self.game[@"score"];
-    self.timeLabel.text = self.game[@"time"];
+    self.game = [[SCGame alloc] initWithJson:responseObject];
+    self.navigationItem.title = self.game.name;
+    self.scoreLabel.text = self.game.score;
+//    self.timeLabel.text = self.game[@"time"];
 //    self.gameSummaryTableViewController.summary = self.game[@"summary"];
 //    
 //    [self.gameSummaryTableViewController.tableView reloadData];

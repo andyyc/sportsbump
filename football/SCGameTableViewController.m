@@ -11,6 +11,7 @@
 #import "SCHighlightViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "AFNetworking.h"
+#import "SCGame.h"
 
 NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 
@@ -40,13 +41,13 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME_SUMMARY, self.game[@"gamekey"]]]];
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME_SUMMARY, self.game.gamekey]]];
   AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.game = responseObject;
-    self.summary = self.game[@"summary"];
+    self.game = [[SCGame alloc] initWithJson:responseObject];
+//    self.summary = self.game[@"summary"];
     [self.tableView reloadData];
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Request Failed: %@, %@", error, error.userInfo);

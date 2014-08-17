@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCGamesTableViewCell : UITableViewCell
+@interface SCScoreboardTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *score;

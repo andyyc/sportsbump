@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "SCCommentStore.h"
+#import "SCGame.h"
 
 @interface SCCommentTableViewController : UITableViewController<SCCommentStoreDelegate>
 
-@property (nonatomic, strong) NSDictionary *game;
+@property (nonatomic, strong) SCGame *game;
 
 - (void)didFetchComments:(NSArray *)data;
 

@@ -24,6 +24,6 @@
 
 - (void)fetchCommentsForGameKey:(NSString *)gameKey;
 
-- (void)postCommentText:(NSString *)text forPost:(NSString *)postId andParent:(SCComment *)parent;
+- (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent;
 
 @end

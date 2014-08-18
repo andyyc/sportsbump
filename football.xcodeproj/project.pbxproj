@@ -21,6 +21,7 @@
 		E6517F5C19A018D400D53FDB /* SCScoreboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F5B19A018D400D53FDB /* SCScoreboard.m */; };
 		E6517F6119A1315700D53FDB /* SCPlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6019A1315700D53FDB /* SCPlay.m */; };
 		E6517F6419A1393100D53FDB /* SCGameSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6319A1393100D53FDB /* SCGameSummary.m */; };
+		E6517F6719A1C0B200D53FDB /* SCCommentBumpStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6619A1C0B200D53FDB /* SCCommentBumpStore.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -88,6 +89,8 @@
 		E6517F6019A1315700D53FDB /* SCPlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPlay.m; sourceTree = "<group>"; };
 		E6517F6219A1393100D53FDB /* SCGameSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCGameSummary.h; sourceTree = "<group>"; };
 		E6517F6319A1393100D53FDB /* SCGameSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGameSummary.m; sourceTree = "<group>"; };
+		E6517F6519A1C0B200D53FDB /* SCCommentBumpStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentBumpStore.h; sourceTree = "<group>"; };
+		E6517F6619A1C0B200D53FDB /* SCCommentBumpStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentBumpStore.m; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 				E6AD93F8198390850097E67A /* SCCommentStore.m */,
 				E6517F531997810100D53FDB /* SCCommentComposerViewController.h */,
 				E6517F541997810200D53FDB /* SCCommentComposerViewController.m */,
+				E6517F6519A1C0B200D53FDB /* SCCommentBumpStore.h */,
+				E6517F6619A1C0B200D53FDB /* SCCommentBumpStore.m */,
 			);
 			name = comments;
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 				E61EDDBF197FA53B001A988D /* SCEmptySegue.m in Sources */,
 				E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */,
 				E6D90D64197B31F900C7EFA1 /* SCScrollViewContainer.m in Sources */,
+				E6517F6719A1C0B200D53FDB /* SCCommentBumpStore.m in Sources */,
 				E6D90D25197B309700C7EFA1 /* main.m in Sources */,
 				E6D90D5E197B31F900C7EFA1 /* SCGameTableViewCell.m in Sources */,
 				E61EDDBC197F9384001A988D /* SCContainerViewController.m in Sources */,

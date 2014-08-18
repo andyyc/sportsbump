@@ -86,7 +86,7 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
 
 #pragma mark - UISegmentedControl
 
--(IBAction)indexChanged:(UISegmentedControl *)sender
+- (IBAction)indexChanged:(UISegmentedControl *)sender
 {
   [self.gameContainerViewController selectedGameSegmentIndex:self.segmentedControl.selectedSegmentIndex];
 }

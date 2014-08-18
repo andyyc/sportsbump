@@ -30,10 +30,22 @@
   [super viewDidLoad];
   [self.inputText becomeFirstResponder];
   // Do any additional setup after loading the view.
-  self.parentCommentPoints.text = [self.comment.points stringValue];
   self.parentCommentText.text = self.comment.text;
-  self.parentCommentUsername.text =  self.comment.username;
-  self.parentCommentCreatedTime.text = [self.comment createdTimeAgo];
+  CGSize sizeThatFitsTextView = [self.parentCommentText sizeThatFits:CGSizeMake(self.parentCommentText.frame.size.width, MAXFLOAT)];
+  self.parentCommentTextHeightConstraint.constant = ceilf(sizeThatFitsTextView.height);
+  self.parentCommentUsername.text = self.comment.username;
+  
+  if (self.comment.username) {
+    self.parentCommentPoints.text = [NSString stringWithFormat:@"%d 👊", self.comment.points];
+  } else {
+    self.parentCommentPoints.text = nil;
+  }
+  
+  if ([self.comment createdTimeAgo]) {
+    self.parentCommentCreatedTime.text = [NSString stringWithFormat:@"∙ %@", [self.comment createdTimeAgo]];
+  } else {
+    self.parentCommentCreatedTime.text = nil;
+  }
 }
 
 - (void)didReceiveMemoryWarning

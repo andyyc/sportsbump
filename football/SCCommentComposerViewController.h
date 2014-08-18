@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *parentCommentUsername;
 @property (weak, nonatomic) IBOutlet UILabel *parentCommentCreatedTime;
 @property (weak, nonatomic) IBOutlet UITextView *parentCommentText;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *parentCommentTextHeightConstraint;
 
 @property (weak, nonatomic) IBOutlet UITextView *inputText;
 

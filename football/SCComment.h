@@ -14,7 +14,8 @@
 @property (assign, nonatomic) NSInteger postId;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSString *username;
-@property (strong, nonatomic) NSNumber *points;
+@property (assign, nonatomic) NSInteger points;
+@property (assign, nonatomic) BOOL hasBumped;
 @property (strong, nonatomic) NSDate * created;
 @property (strong, nonatomic) SCComment *parent;
 @property (strong, nonatomic) NSArray *children;

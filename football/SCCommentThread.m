@@ -10,10 +10,8 @@
 
 @interface SCCommentThread()
 
-@property (strong, nonatomic) NSMutableDictionary *commentIdToDataMap;
 @property (strong, nonatomic) NSMutableArray *roots;
 @property (strong, nonatomic) NSMutableDictionary *edges;
-@property (strong, nonatomic) NSMutableDictionary *commentIdToCommentIndexMap;
 
 @end
 

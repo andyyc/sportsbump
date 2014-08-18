@@ -13,6 +13,8 @@
 @interface SCCommentThread : NSObject
 
 @property (strong, nonatomic) NSMutableArray *commentIndex;
+@property (strong, nonatomic) NSMutableDictionary *commentIdToCommentIndexMap;
+@property (strong, nonatomic) NSMutableDictionary *commentIdToDataMap;
 
 - (instancetype)initWithArray:(NSArray *)commentArray;
 - (NSArray *)toggleCommentStartingAtIndex:(NSInteger)index collapsedComments:(NSMutableArray *)collapsedComments;

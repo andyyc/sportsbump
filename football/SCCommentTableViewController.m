@@ -13,6 +13,7 @@
 #import "SCLoginViewController.h"
 #import "SCCommentComposerViewController.h"
 #import "SCGame.h"
+#import "SCCommentBumpStore.h"
 
 @interface SCCommentTableViewController ()
 
@@ -21,6 +22,7 @@
 @property (strong, nonatomic) SCCommentTableViewCell *dummyCellCollapsed;
 @property (strong, nonatomic) NSMutableArray *collapsedComments;
 @property (strong, nonatomic) SCCommentStore *commentStore;
+@property (strong, nonatomic) SCCommentBumpStore *commentBumpStore;
 
 @end
 
@@ -47,6 +49,8 @@
   
   _commentStore = [[SCCommentStore alloc] init];
   _commentStore.delegate = self;
+  _commentBumpStore = [[SCCommentBumpStore alloc] init];
+  _commentBumpStore.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -81,13 +85,16 @@
   // Configure the cell...
   [self configureCell:cell forRowAtIndexPath:indexPath];
   
-  UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
-                                           initWithTarget:self action:@selector(toggleArrowTapped:)];
-  // Specify that the gesture must be a single tap
-  tapRecognizer.numberOfTapsRequired = 1;
+  UITapGestureRecognizer *tapArrowRecognizer = [[UITapGestureRecognizer alloc]
+                                                initWithTarget:self action:@selector(toggleArrowTapped:)];
+  tapArrowRecognizer.numberOfTapsRequired = 1;
+  [cell.usernameView addGestureRecognizer:tapArrowRecognizer];
   
-  // Add the tap gesture recognizer to the view
-  [cell.usernameView addGestureRecognizer:tapRecognizer];
+  UITapGestureRecognizer *tapPointsRecognizer = [[UITapGestureRecognizer alloc]
+                                                initWithTarget:self action:@selector(pointsTapped:)];
+  tapPointsRecognizer.numberOfTapsRequired = 1;
+  [cell.points setUserInteractionEnabled:YES];
+  [cell.points addGestureRecognizer:tapPointsRecognizer];
   
   // Disable highlighting
   cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -97,7 +104,6 @@
 
 - (void)toggleArrowTapped:(UIGestureRecognizer *)gesture
 {
-  NSLog(@"tapped");
   CGPoint location = [gesture locationInView:self.tableView];
   NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
   
@@ -114,6 +120,15 @@
   [self.tableView beginUpdates];
   [self.tableView reloadRowsAtIndexPaths:toggledIndexPaths withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
+}
+
+- (void)pointsTapped:(UITapGestureRecognizer *)gesture
+{
+  CGPoint location = [gesture locationInView:self.tableView];
+  NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+  SCComment *comment = self.commentThread.commentIndex[indexPath.row];
+  
+  [_commentBumpStore postCommentBumpForComment:comment.commentId isRemoved:comment.hasBumped];
 }
 
 /*
@@ -197,13 +212,22 @@
   
   cell.commentText.text = comment.text;
   cell.username.text = comment.username;
-  cell.points.text = [NSString stringWithFormat:@"%@ 👊", comment.points];
+  cell.points.text = [NSString stringWithFormat:@"%d 👊", comment.points];
+  
+  if (comment.hasBumped) {
+    cell.points.textColor = [UIColor blackColor];
+    cell.points.alpha = 1.0;
+  } else {
+    cell.points.textColor = [UIColor lightGrayColor];
+    cell.points.alpha = 0.5;
+  }
+  
   if (comment.shouldHideCommentText) {
     cell.toggleArrow.text = @"▸";
   } else {
     cell.toggleArrow.text = @"▾";
   }
-  cell.timePosted.text = [comment createdTimeAgo];
+  cell.timePosted.text = [NSString stringWithFormat:@"∙ %@", [comment createdTimeAgo]];
 }
 
 - (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath
@@ -268,7 +292,8 @@
 
 - (IBAction)didTapAddComment:(id)sender
 {
-  BOOL loggedIn = YES;
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  BOOL loggedIn = [[userDefaults objectForKey:@"key"] boolValue];
   
   if (!loggedIn) {
     [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:sender];
@@ -289,6 +314,29 @@
   }
   
   [self.tableView reloadData];
+}
+
+#pragma mark - SCCommentBumpStoreDelegate
+
+- (void)didPostCommentBump:(NSDictionary *)data
+{
+  NSString *commentId = data[@"comment"];
+  NSNumber *commentIndex = self.commentThread.commentIdToCommentIndexMap[commentId];
+  SCComment *comment = self.commentThread.commentIdToDataMap[commentId];
+  BOOL isBumpRemoved = [data[@"is_removed"] boolValue];
+  if (isBumpRemoved) {
+    comment.points -= 1;
+  } else {
+    comment.points += 1;
+  }
+  
+  comment.hasBumped = !isBumpRemoved;
+  
+  NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[commentIndex intValue] inSection:0];
+  
+  [self.tableView beginUpdates];
+  [self.tableView reloadRowsAtIndexPaths:@[commentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+  [self.tableView endUpdates];
 }
 
 @end

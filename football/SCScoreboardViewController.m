@@ -43,29 +43,8 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.navigationItem.title = @"Scores";
-//  self.dateChoices = @[@"Week 1", @"Week 2", @"Week 3"];
   self.dateChoicesViews = [[NSMutableArray alloc] init];
-  
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_WEEK_CHOICES]];
-  AFHTTPRequestOperation *dateChoicesOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  
-  dateChoicesOperation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [dateChoicesOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.weekChoices = responseObject[@"week_choices"];
-    self.weekChoiceIds = responseObject[@"week_choice_ids"];
-    CGSize dateScrollViewSize = self.dateScrollView.frame.size;
-    self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
-    
-    for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
-      [self.dateChoicesViews addObject:[NSNull null]];
-    }
-    [self loadVisiblePages];
-    [self _fetchAndReloadScoreboardForDate:0];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-  }];
-  
-  [dateChoicesOperation start];
+  [self _fetchWeekChoices];
   
   if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -179,6 +158,30 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 }
 
 #pragma mark - Private
+
+- (void)_fetchWeekChoices
+{
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_WEEK_CHOICES]];
+  AFHTTPRequestOperation *dateChoicesOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  
+  dateChoicesOperation.responseSerializer = [AFJSONResponseSerializer serializer];
+  [dateChoicesOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    self.weekChoices = responseObject[@"week_choices"];
+    self.weekChoiceIds = responseObject[@"week_choice_ids"];
+    CGSize dateScrollViewSize = self.dateScrollView.frame.size;
+    self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
+    
+    for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
+      [self.dateChoicesViews addObject:[NSNull null]];
+    }
+    [self loadVisiblePages];
+    [self _fetchAndReloadScoreboardForDate:0];
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
+  }];
+  
+  [dateChoicesOperation start];
+}
 
 - (void)_fetchAndReloadScoreboardForDate:(NSInteger)date
 {

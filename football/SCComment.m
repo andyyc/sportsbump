@@ -16,9 +16,10 @@
     _commentId = json[@"id"];
     _username = json[@"author_name"];
     _text = json[@"text"];
-    _points = json[@"points"];
+    _points = [json[@"points_derived"] integerValue];
     _postId = [json[@"post"] integerValue];
     _created = [self _stringToDate:json[@"created_at"]];
+    _hasBumped = [json[@"has_bumped"] boolValue];
   }
   
   return self;
@@ -33,6 +34,10 @@
 
 - (NSString *)createdTimeAgo
 {
+  if (!self.created) {
+    return nil;
+  }
+  
   NSTimeInterval createdTimeFromNowSeconds = [self.created timeIntervalSinceNow];
   
   // Get the system calendar

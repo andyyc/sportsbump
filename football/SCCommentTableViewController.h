@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SCCommentStore.h"
 #import "SCGame.h"
+#import "SCCommentBumpStore.h"
 
-@interface SCCommentTableViewController : UITableViewController<SCCommentStoreDelegate>
+@interface SCCommentTableViewController : UITableViewController<SCCommentStoreDelegate, SCCommentBumpStoreDelegate>
 
 @property (nonatomic, strong) SCGame *game;
 

@@ -59,7 +59,8 @@
     
     if (!error && httpResp.statusCode == 200) {
       NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-      [userDefaults setObject:jsonDict[@"key"]  forKey:@"key"];
+      [userDefaults setObject:self.username forKey:@"username"];
+      [userDefaults setObject:jsonDict[@"key"] forKey:@"key"];
       [userDefaults synchronize];
       dispatch_async(dispatch_get_main_queue(), ^{
         [_delegate loginSuccessWithResponse:httpResp andBody:jsonDict];

@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class SCScoreboard;
+
 @interface SCScoreboardTableViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *scores;
+@property (strong, nonatomic) SCScoreboard *scoreboard;
 
 @end

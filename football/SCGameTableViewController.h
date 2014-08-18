@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCGame.h"
+#import "SCGameSummary.h"
 
 @interface SCGameTableViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *summary;
+@property (nonatomic, strong) SCGameSummary *summary;
+@property (nonatomic, strong) SCGame *game;
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 sportschub. All rights reserved.
 //
 
-#import "SCGamesTableViewCell.h"
+#import "SCScoreboardTableViewCell.h"
 
-@implementation SCGamesTableViewCell
+@implementation SCScoreboardTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

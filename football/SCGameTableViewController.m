@@ -9,8 +9,17 @@
 #import "SCGameTableViewController.h"
 #import "SCGameTableViewCell.h"
 #import "SCHighlightViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import "AFNetworking.h"
+#import "SCGame.h"
+#import "SCPlay.h"
+
+//NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
+NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/plays/?gamekey=%@";
 
 @interface SCGameTableViewController ()
+
+@property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
 
 @end
 
@@ -34,6 +43,18 @@
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME_SUMMARY, self.game.gamekey]]];
+  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  
+  operation.responseSerializer = [AFJSONResponseSerializer serializer];
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    self.summary = [[SCGameSummary alloc] initWithJson:responseObject];
+    [self.tableView reloadData];
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
+  }];
+  
+  [operation start];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,13 +68,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return self.summary.count;
+  return self.summary.quarters.count > 0 ? self.summary.quarters.count : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return ((NSArray *)self.summary[section][@"plays"]).count;
+  return [[self.summary playsForSection:section] count];
 }
 
 
@@ -63,10 +84,10 @@
   long row = [indexPath row];
   long section = [indexPath section];
   
-  NSDictionary *play = self.summary[section][@"plays"][row];
+  SCPlay *play = [self.summary playsForSection:section][row];
   SCGameTableViewCell *playCell;
   
-  if (play[@"video"]) {
+  if (play.videoUrl) {
     playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCellWithVideo" forIndexPath:indexPath];
     playCell.videoLabel.text = @"🎥";
   } else {
@@ -74,15 +95,34 @@
     playCell.videoLabel.text = @"";
   }
   
-  playCell.timeLabel.text = play[@"time"];
-  playCell.playLabel.text = play[@"text"];
+  playCell.timeLabel.text = play.time;
+  
+  if (play.down && play.down.length > 0) {
+    playCell.playLabel.text = [NSString stringWithFormat:@"%@. %@", play.down, play.text];
+  } else {
+    playCell.playLabel.text = play.text;
+  }
   
   return playCell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return self.summary[section][@"quarter"];
+  if (self.summary.quarters.count > 0) {
+    if ([self.summary.quarters[section] isEqualToString:@"1"]) {
+      return @"1st Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"2"]) {
+      return @"2nd Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"3"]) {
+      return @"3rd Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"4"]) {
+      return @"4th Quarter";
+    } else if ([self.summary.quarters[section] isEqualToString:@"5"]) {
+      return @"Overtime";
+    }
+  }
+  
+  return nil;
 }
 
 /*
@@ -123,9 +163,47 @@
 }
 */
 
+#pragma mark - UITableViewDelegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
+  // [self.parentViewController performSegueWithIdentifier:@"PlayToHighlightSegue" sender:self];
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
+  SCPlay *play = [self.summary playsForSection:section][row];
+  
+  _moviePlayer =  [[MPMoviePlayerController alloc] initWithContentURL:play.videoUrl];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(moviePlayBackDidFinish:)
+                                               name:MPMoviePlayerPlaybackDidFinishNotification
+                                             object:_moviePlayer];
+  
+  _moviePlayer.controlStyle = MPMovieControlStyleDefault;
+  _moviePlayer.shouldAutoplay = YES;
+  [self.view addSubview:_moviePlayer.view];
+  [_moviePlayer setFullscreen:YES animated:YES];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+  UIView *view = [[UIView alloc] init];
+  
+  return view;
+}
+
+
+#pragma mark - MPMoviePlayer
+
+- (void) moviePlayBackDidFinish:(NSNotification*)notification {
+  MPMoviePlayerController *player = [notification object];
+  
+  [[NSNotificationCenter defaultCenter]
+   removeObserver:self
+   name:MPMoviePlayerPlaybackDidFinishNotification
+   object:player];
+  
+  [player.view removeFromSuperview];
 }
 
 #pragma mark - Navigation

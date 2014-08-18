@@ -7,8 +7,10 @@
 //
 
 #import "SCScoreboardTableViewController.h"
-#import "SCGamesTableViewCell.h"
+#import "SCScoreboardTableViewCell.h"
 #import "SCGameViewController.h"
+#import "SCScoreboard.h"
+#import "SCGame.h"
 
 @interface SCScoreboardTableViewController ()
 
@@ -47,26 +49,30 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return self.scores.count;
+    return self.scoreboard.sectionsByDate.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return ((NSArray *)self.scores[section][@"games"]).count;
+  NSDate *date = self.scoreboard.sectionsByDate[section];
+  return ((NSArray *)self.scoreboard.dateToGamesMap[date]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  SCGamesTableViewCell *gameCell = [tableView dequeueReusableCellWithIdentifier:@"GameCell" forIndexPath:indexPath];
+  SCScoreboardTableViewCell *gameCell = [tableView dequeueReusableCellWithIdentifier:@"GameCell" forIndexPath:indexPath];
     
     // Configure the cell...
   long row = [indexPath row];
   long section = [indexPath section];
-  NSDictionary *game = self.scores[section][@"games"][row];
+  NSDate *date = self.scoreboard.sectionsByDate[section];
+  NSArray *games = (NSArray *)self.scoreboard.dateToGamesMap[date];
   
-  gameCell.name.text = game[@"name"];
-  gameCell.score.text = [NSString stringWithFormat:@"%@ (%@)", game[@"score"], game[@"time"]];
+  SCGame *game = games[row];
+  
+  gameCell.name.text = game.name;
+  gameCell.score.text = game.score;
   
   return gameCell;
 }
@@ -111,7 +117,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return self.scores[section][@"title"];
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"eeee MMM d"];
+  NSDate *date = self.scoreboard.sectionsByDate[section];
+  return [formatter stringFromDate:date];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

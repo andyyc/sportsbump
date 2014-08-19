@@ -556,7 +556,6 @@
                                     <outlet property="toggleArrow" destination="MFO-N3-aO6" id="pvT-Tj-lRZ"/>
                                     <outlet property="username" destination="WIK-ZL-iey" id="z73-2a-sm2"/>
                                     <outlet property="usernameView" destination="26N-nZ-qWB" id="gCM-CO-q4e"/>
-                                    <segue destination="IOB-O7-Ysk" kind="modal" identifier="CommentToComposerSegue" id="mtd-K4-xFU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -567,6 +566,7 @@
                     </tableView>
                     <connections>
                         <segue destination="EYT-7Y-uPW" kind="modal" identifier="CommentToLoginSegue" id="cMH-d5-Ns9"/>
+                        <segue destination="IOB-O7-Ysk" kind="modal" identifier="CommentToComposerSegue" id="gbT-WE-ukp"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RcS-eR-7En" userLabel="First Responder" sceneMemberID="firstResponder"/>

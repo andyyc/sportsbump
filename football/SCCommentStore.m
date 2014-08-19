@@ -50,6 +50,10 @@
 - (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent
 {
   NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSString *key = [[NSUserDefaults standardUserDefaults] objectForKey:@"key"];
+  NSString *tokenValue = [NSString stringWithFormat:@"Token %@", key];
+  [configuration setHTTPAdditionalHeaders:@{@"Authorization":tokenValue}];
+  
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:COMMENTS_URL]];
   [request setHTTPMethod:@"POST"];

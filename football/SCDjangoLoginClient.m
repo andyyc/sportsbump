@@ -62,6 +62,9 @@
       [userDefaults setObject:self.username forKey:@"username"];
       [userDefaults setObject:jsonDict[@"key"] forKey:@"key"];
       [userDefaults synchronize];
+      
+      NSString *tokenValue = [NSString stringWithFormat:@"Token %@", jsonDict[@"key"]];
+      [configuration setHTTPAdditionalHeaders:@{@"Authorization":tokenValue}];
       dispatch_async(dispatch_get_main_queue(), ^{
         [_delegate loginSuccessWithResponse:httpResp andBody:jsonDict];
       });

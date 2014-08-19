@@ -179,6 +179,8 @@
   
   if (!loggedIn) {
     [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:self];
+  } else {
+    [self performSegueWithIdentifier:@"CommentToComposerSegue" sender:self];
   }
 }
 

@@ -341,4 +341,9 @@
   [self.tableView endUpdates];
 }
 
+- (void)failedToPostCommentBump:(NSDictionary *)data
+{
+  // do nothing
+}
+
 @end

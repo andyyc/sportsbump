@@ -65,7 +65,7 @@
     [alert show];
   } else {
     _registerClient = [[SCDjangoRegisterClient alloc] initWithURL:REGISTER_URL forUsername:_username.text andEmail:_email.text andPassword:_password.text andRepeatPassword:_repeatPassword.text];
-  //  _registerClient.delegate = self;
+    _registerClient.delegate = self;
     [_registerClient register];
   }
 }
@@ -95,5 +95,22 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - SCDjangoRegisterClientDelegate
+
+- (void)registerSuccessWithResponse:(NSHTTPURLResponse *)response andBody:(NSDictionary *)data
+{
+  [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)registerFailedWithResponse:(NSHTTPURLResponse *)response andBody:(NSDictionary *)data
+{
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Registration failed"
+                                                  message:@"Sorry! Username taken."
+                                                 delegate:self
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+  [alert show];
+}
 
 @end

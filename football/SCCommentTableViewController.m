@@ -295,7 +295,8 @@
 - (IBAction)didTapAddComment:(id)sender
 {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  BOOL loggedIn = [[userDefaults objectForKey:@"key"] boolValue];
+  NSString *key = [userDefaults objectForKey:@"key"];
+  BOOL loggedIn = key && key.length > 0;
   
   if (!loggedIn) {
     [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:sender];

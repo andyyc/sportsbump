@@ -14,11 +14,16 @@
 {
   NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
   NSString *key = [[NSUserDefaults standardUserDefaults] objectForKey:@"key"];
+  NSMutableDictionary *headerDict = [[NSMutableDictionary alloc] init];
+  
+  headerDict[@"Content-Type"] = @"application/json";
   
   if (key.length > 0) {
     NSString *tokenValue = [NSString stringWithFormat:@"Token %@", key];
-    [configuration setHTTPAdditionalHeaders:@{@"Authorization":tokenValue}];
+    headerDict[@"Authorization"] = tokenValue;
   }
+  
+  [configuration setHTTPAdditionalHeaders:headerDict];
   
   return configuration;
 }

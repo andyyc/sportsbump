@@ -7,9 +7,9 @@
 //
 
 #import "SCDjangoRegisterClient.h"
-#import "AFNetworking.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
-@interface SCDjangoRegisterClient()
+@interface SCDjangoRegisterClient()<NSURLSessionDelegate>
 
 // Private properties
 @property (nonatomic, strong) NSString *username;
@@ -40,125 +40,50 @@
 }
 
 - (void)register
-{  
-  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-  manager.responseSerializer = [AFJSONResponseSerializer serializer];
-  manager.requestSerializer = [AFJSONRequestSerializer serializer];
-  manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
-  
+{
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.requestURL]];
+  [request setHTTPMethod:@"POST"];
   NSDictionary *params = @{@"username": self.username,
                            @"email": self.email,
                            @"password": self.password,
                            };
   
-  // register again
-  [manager POST:self.requestURL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSLog(@"success");
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:responseObject[@"username"] forKey:@"username"];
-    [userDefaults setObject:responseObject[@"email"] forKey:@"email"];
-    [userDefaults setObject:responseObject[@"key"]  forKey:@"key"];
-    [userDefaults synchronize];
-  } failure:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSHTTPURLResponse *urlResponse = operation.response;
-    
-    if (urlResponse.statusCode == 400) {
-      // missing fields
-    } else {
-      // some other error
-    }
-    NSLog(@"%@", [NSString stringWithUTF8String:[operation.responseData bytes]]);
-    if (operation.response.statusCode == 400) {
-      NSLog(@"error more info");
-    }
-  }];
-  /*
-  [manager GET:self.requestURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSHTTPURLResponse *urlResponse = operation.response;
-    
-    if (urlResponse.statusCode == 200) {
-      if (!_csrfToken) {
-        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[urlResponse allHeaderFields] forURL:[NSURL URLWithString:self.requestURL]];
-        
-        // Django defaults to CSRF protection, so we need to get the token to send back in the request
-        NSHTTPCookie *csrfCookie;
-        for (NSHTTPCookie *cookie in cookies) {
-          if ([cookie.name isEqualToString:@"csrftoken"]) {
-            csrfCookie = cookie;
-          }
-        }
-        
-        NSDictionary *params = @{@"username": self.username,
-                                 @"email": self.email,
-                                 @"password1": self.password,
-                                 @"password2": self.repeatPassword,
-                                 @"csrfmiddlewaretoken": csrfCookie.value
-                                 };
-        
-        // register again
-        [manager POST:self.requestURL parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-          NSLog(@"success");
-          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-          [userDefaults setObject:self.username forKey:@"username"];
-          [userDefaults setObject:self.email forKey:@"email"];
-          [userDefaults synchronize];
-        } failure:^(AFHTTPRequestOperation *operation, id responseObject){
-          NSLog(@"error registering");
-        }];
-      }
+  NSData *postData = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
+  [request setHTTPBody:postData];
+  
+  NSURLSessionDataTask *dataTask =
+    [session
+    dataTaskWithRequest:request
+    completionHandler:^(NSData *data,
+                        NSURLResponse *response,
+                        NSError *error)
+    {
+      NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+      NSError *responseError;
+      NSDictionary* jsonDict = [NSJSONSerialization
+                                JSONObjectWithData:data
+                                options:kNilOptions
+                                error:&responseError];
       
-      // We're logged in and good to go
-//      NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//      
-//      [userDefaults synchronize];
-//      if ([_delegate respondsToSelector:@selector(loginSuccessful:)]) {
-//        [_delegate loginSuccessful:resultObject];
-//      }
-//      [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidLoginSuccessfully object:resultObject];
-    } else {
-      // failed
-    }
-//    else if (resultObject.statusCode == 401) {      
-//      // Check to see if we've already made an attempt to log in and failed
-//      if ([[resultObject.responseHeaders objectForKey:@"Auth-Response"] isEqualToString:@"Login failed"]) {
-//        resultObject.loginFailureReason = kDjangoAuthClientLoginFailureInvalidCredentials;
-//        if ([_delegate respondsToSelector:@selector(loginFailed:)]) {
-//          [_delegate loginFailed:resultObject];
-//        }
-//        [[NSNotificationCenter defaultCenter] postNotificationName:DjangoAuthClientDidFailToLogin object:resultObject];
-//      }
-//      else {
-//        // Initial login attempt
-//        NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:resultObject.responseHeaders forURL:self.requestURL];
-//        
-//        // Django defaults to CSRF protection, so we need to get the token to send back in the request
-//        NSHTTPCookie *csrfCookie;
-//        for (NSHTTPCookie *cookie in cookies) {
-//          if ([cookie.name isEqualToString:@"csrftoken"]) {
-//            csrfCookie = cookie;
-//          }
-//        }
-//        
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.requestURL];
-//        [request setHTTPMethod:@"POST"];
-//        
-//        NSString *authString = [NSString stringWithFormat:@"username=%@;password=%@;csrfmiddlewaretoken=%@;", _username, _password, csrfCookie.value, nil];
-//        [request setHTTPBody:[authString dataUsingEncoding:NSUTF8StringEncoding]];
-//        
-//        [self makeLoginRequest:request];
-//      }
-//    }
-//    else if (resultObject.statusCode == 403) {
-//      // Login failed because the user's account is inactive
-//      resultObject.loginFailureReason = kDjangoAuthClientLoginFailureInactiveAccount;
-//      if ([_delegate respondsToSelector:@selector(loginFailed:)]) {
-//        [_delegate loginFailed:resultObject];
-//      }
-//    }
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Error: %@", error);
-  }];
-   */
+      if (!error && httpResp.statusCode == 201) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+          [userDefaults setObject:jsonDict[@"username"] forKey:@"username"];
+          [userDefaults setObject:jsonDict[@"key"]  forKey:@"key"];
+          [userDefaults synchronize];
+          [_delegate registerSuccessWithResponse:httpResp andBody:jsonDict];
+        });
+      } else {
+        // alert for error saving / updating note
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [_delegate registerFailedWithResponse:httpResp andBody:jsonDict];
+        });
+      }
+    }];
+  
+  [dataTask resume];
 }
 
 

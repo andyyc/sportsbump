@@ -20,8 +20,6 @@
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSString *commentsUrl = [NSString stringWithFormat:@"%@?gamekey=%@", COMMENTS_URL, gameKey];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:commentsUrl]];
-  
-  [request setHTTPMethod:@"GET"];
   [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   NSURLSessionDataTask *dataTask = [session
@@ -62,9 +60,7 @@
     postDictionary[@"parent"] = parent.commentId;
   }
 
-  NSError *error;
-  NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
-  [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:nil];
   [request setHTTPBody:postData];
   
   NSURLSessionDataTask *dataTask = [session

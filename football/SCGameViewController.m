@@ -7,20 +7,19 @@
 //
 
 #import "SCGameViewController.h"
-#import "AFNetworking.h"
 #import "SCContainerViewController.h"
 #import "SCHighlightViewController.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
 NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
 
-@interface SCGameViewController ()
+@interface SCGameViewController ()<NSURLSessionDelegate>
 
 @property (strong, nonatomic)  SCContainerViewController* gameContainerViewController;
 
 @end
 
 @implementation SCGameViewController
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -39,21 +38,39 @@ NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
   self.scoreLabel.text = self.game.score;
   self.timeLabel.text = @"";
   
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME, self.game.gamekey]]];
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSLog(@"%@", responseObject);
-    self.game = [[SCGame alloc] initWithJson:responseObject];
-    self.navigationItem.title = self.game.name;
-    self.scoreLabel.text = self.game.score;
-    self.timeLabel.text = @"";
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-  }];
+  NSURLSessionDataTask *dataTask =
+    [session
+     dataTaskWithRequest:request
+     completionHandler:^(NSData *data,
+                         NSURLResponse *response,
+                         NSError *error)
+     {
+       NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+       NSError *responseError;
+       NSDictionary* jsonDict = [NSJSONSerialization
+                                 JSONObjectWithData:data
+                                            options:kNilOptions
+                                              error:&responseError];
+       
+       if (!error && httpResp.statusCode == 200) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+           self.game = [[SCGame alloc] initWithJson:jsonDict];
+           self.navigationItem.title = self.game.name;
+           self.scoreLabel.text = self.game.score;
+           self.timeLabel.text = @"";
+         });
+       } else {
+         // alert for error saving / updating note
+         dispatch_async(dispatch_get_main_queue(), ^{
+         });
+       }
+     }];
   
-  [operation start];
+  [dataTask resume];
 }
 
 - (void)didReceiveMemoryWarning

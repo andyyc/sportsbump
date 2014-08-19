@@ -8,8 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol SCDjangoRegisterClientDelegate<NSObject>
+
+- (void)registerSuccessWithResponse:(NSHTTPURLResponse *)response andBody:(NSDictionary *)data;
+
+@optional
+- (void)registerFailedWithResponse:(NSHTTPURLResponse *)response andBody:(NSDictionary *)data;
+
+@end
+
 @interface SCDjangoRegisterClient : NSObject
 
+@property (weak) id <SCDjangoRegisterClientDelegate> delegate;
 @property (nonatomic, strong) NSString *requestURL;
 @property (nonatomic, strong) NSMutableData *responseData;
 

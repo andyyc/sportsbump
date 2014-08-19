@@ -3,8 +3,6 @@
 
 target "football" do
 
-pod 'AFNetworking', '~> 2.2'
-
 end
 
 target "footballTests" do

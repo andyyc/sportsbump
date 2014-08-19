@@ -10,14 +10,14 @@
 #import "SCGameTableViewCell.h"
 #import "SCHighlightViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
-#import "AFNetworking.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 #import "SCGame.h"
 #import "SCPlay.h"
 
 //NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
 NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/plays/?gamekey=%@";
 
-@interface SCGameTableViewController ()
+@interface SCGameTableViewController ()<NSURLSessionDelegate>
 
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
 
@@ -43,18 +43,38 @@ NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/plays/?gamekey=%@";
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_GAME_SUMMARY, self.game.gamekey]]];
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+
   
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.summary = [[SCGameSummary alloc] initWithJson:responseObject];
-    [self.tableView reloadData];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-  }];
+  NSURLSessionDataTask *dataTask =
+  [session
+   dataTaskWithRequest:request
+   completionHandler:^(NSData *data,
+                       NSURLResponse *response,
+                       NSError *error)
+   {
+     NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+     NSError *responseError;
+     NSArray *jsonDict = [NSJSONSerialization JSONObjectWithData:data
+                                                         options:kNilOptions
+                                                           error:&responseError];
+     
+     if (!error && httpResp.statusCode == 200) {
+       dispatch_async(dispatch_get_main_queue(), ^{
+         self.summary = [[SCGameSummary alloc] initWithJson:jsonDict];
+         [self.tableView reloadData];
+       });
+     } else {
+       // alert for error saving / updating note
+       dispatch_async(dispatch_get_main_queue(), ^{
+       });
+     }
+   }];
   
-  [operation start];
+  [dataTask resume];
 }
 
 - (void)didReceiveMemoryWarning

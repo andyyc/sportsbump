@@ -7,6 +7,7 @@
 //
 
 #import "SCCommentBumpStore.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
 #define COMMENT_BUMP_URL @"http://localhost:8888/api/comment-bump/"
 
@@ -14,7 +15,7 @@
 
 - (void)postCommentBumpForComment:(NSString *)commentId isRemoved:(BOOL)isRemoved
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:COMMENT_BUMP_URL]];
   [request setHTTPMethod:@"POST"];

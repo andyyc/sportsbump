@@ -7,11 +7,11 @@
 //
 
 #import "SCScoreboardViewController.h"
-#import "AFNetworking.h"
 #import "SCScoreboardTableViewController.h"
 #import "SCGameViewController.h"
 #import "SCScoreboardTableViewController.h"
 #import "SCScoreboard.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
 NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
 NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
@@ -23,7 +23,7 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 @property (strong, nonatomic) NSArray *weekChoiceIds;
 @property (strong, nonatomic) NSMutableArray *dateChoicesViews;
 @property (strong, nonatomic) SCScoreboardTableViewController *scoreboardTableViewController;
-@property (strong, nonatomic) AFHTTPRequestOperation *fetchScoreboardForDateOperation;
+@property (strong, nonatomic) NSURLSessionDataTask *scoreboardDataTask;
 
 @end
 
@@ -161,50 +161,84 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 
 - (void)_fetchWeekChoices
 {
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_WEEK_CHOICES]];
-  AFHTTPRequestOperation *dateChoicesOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   
-  dateChoicesOperation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [dateChoicesOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    self.weekChoices = responseObject[@"week_choices"];
-    self.weekChoiceIds = responseObject[@"week_choice_ids"];
-    CGSize dateScrollViewSize = self.dateScrollView.frame.size;
-    self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
-    
-    for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
-      [self.dateChoicesViews addObject:[NSNull null]];
-    }
-    [self loadVisiblePages];
-    [self _fetchAndReloadScoreboardForDate:0];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-  }];
+  NSURLSessionDataTask *dataTask = [session
+                                    dataTaskWithRequest:request
+                                    completionHandler:^(NSData *data,
+                                                        NSURLResponse *response,
+                                                        NSError *error)
+                                    {
+                                      NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+                                      NSError *responseError;
+                                      NSDictionary* jsonDict = [NSJSONSerialization
+                                                                JSONObjectWithData:data
+                                                                           options:kNilOptions
+                                                                             error:&responseError];
+                                      
+                                      if (!error && httpResp.statusCode == 200) {
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                          self.weekChoices = jsonDict[@"week_choices"];
+                                          self.weekChoiceIds = jsonDict[@"week_choice_ids"];
+                                          CGSize dateScrollViewSize = self.dateScrollView.frame.size;
+                                          self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
+                                          
+                                          for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
+                                            [self.dateChoicesViews addObject:[NSNull null]];
+                                          }
+                                          [self loadVisiblePages];
+                                          [self _fetchAndReloadScoreboardForDate:0];
+                                        });
+                                      } else {
+                                        // alert for error saving / updating note
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                        });
+                                      }
+                                    }];
   
-  [dateChoicesOperation start];
+  [dataTask resume];
 }
 
 - (void)_fetchAndReloadScoreboardForDate:(NSInteger)date
 {
   NSString *dateChoiceId = self.weekChoiceIds[date];
+  
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_SCORES, dateChoiceId]]];
-  if (self.fetchScoreboardForDateOperation != nil) {
-    [self.fetchScoreboardForDateOperation cancel];
-    self.fetchScoreboardForDateOperation = nil;
+  
+  if (self.scoreboardDataTask) {
+    [self.scoreboardDataTask cancel];
   }
+
+  self.scoreboardDataTask = [session
+                              dataTaskWithRequest:request
+                              completionHandler:^(NSData *data,
+                                                  NSURLResponse *response,
+                                                  NSError *error)
+                              {
+                                NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
+                                NSError *responseError;
+                                NSArray* jsonDict = [NSJSONSerialization
+                                                     JSONObjectWithData:data
+                                                                options:kNilOptions
+                                                                  error:&responseError];
+                                
+                                if (!error && httpResp.statusCode == 200) {
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                    self.scoreboardTableViewController.scoreboard = [[SCScoreboard alloc] initWithGamesArray:jsonDict];
+                                    [self.scoreboardTableViewController.tableView reloadData];
+                                  });
+                                } else {
+                                  // alert for error saving / updating note
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                  });
+                                }
+                              }];
   
-  self.fetchScoreboardForDateOperation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  self.fetchScoreboardForDateOperation.responseSerializer = [AFJSONResponseSerializer serializer];
-  
-  __weak __typeof__(self) weakSelf = self;
-  [self.fetchScoreboardForDateOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    __typeof__(self) strongSelf = weakSelf;
-    strongSelf.scoreboardTableViewController.scoreboard = [[SCScoreboard alloc] initWithGamesArray:responseObject];
-    [strongSelf.scoreboardTableViewController.tableView reloadData];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Request Failed: %@, %@", error, error.userInfo);
-  }];
-  
-  [self.fetchScoreboardForDateOperation start];
+  [self.scoreboardDataTask resume];
 }
 
 @end

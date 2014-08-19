@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCScoreboardViewController : UIViewController <UIScrollViewDelegate>
+@interface SCScoreboardViewController : UIViewController <UIScrollViewDelegate, NSURLSessionDelegate>
 
 @end

@@ -8,6 +8,7 @@
 
 #import "SCCommentStore.h"
 #import "SCComment.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
 #define COMMENTS_URL @"http://localhost:8888/api/comments/"
 
@@ -15,7 +16,7 @@
 
 - (void)fetchCommentsForGameKey:(NSString *)gameKey
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSString *commentsUrl = [NSString stringWithFormat:@"%@?gamekey=%@", COMMENTS_URL, gameKey];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:commentsUrl]];
@@ -49,11 +50,7 @@
 
 - (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-  NSString *key = [[NSUserDefaults standardUserDefaults] objectForKey:@"key"];
-  NSString *tokenValue = [NSString stringWithFormat:@"Token %@", key];
-  [configuration setHTTPAdditionalHeaders:@{@"Authorization":tokenValue}];
-  
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:COMMENTS_URL]];
   [request setHTTPMethod:@"POST"];

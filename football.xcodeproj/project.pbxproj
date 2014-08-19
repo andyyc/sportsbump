@@ -20,6 +20,7 @@
 		E6517F6119A1315700D53FDB /* SCPlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6019A1315700D53FDB /* SCPlay.m */; };
 		E6517F6419A1393100D53FDB /* SCGameSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6319A1393100D53FDB /* SCGameSummary.m */; };
 		E6517F6719A1C0B200D53FDB /* SCCommentBumpStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E6517F6619A1C0B200D53FDB /* SCCommentBumpStore.m */; };
+		E684C26E19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E684C26D19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -85,6 +86,8 @@
 		E6517F6319A1393100D53FDB /* SCGameSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCGameSummary.m; sourceTree = "<group>"; };
 		E6517F6519A1C0B200D53FDB /* SCCommentBumpStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentBumpStore.h; sourceTree = "<group>"; };
 		E6517F6619A1C0B200D53FDB /* SCCommentBumpStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentBumpStore.m; sourceTree = "<group>"; };
+		E684C26C19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"; sourceTree = "<group>"; };
+		E684C26D19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m"; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -241,6 +244,15 @@
 			name = plays;
 			sourceTree = "<group>";
 		};
+		E684C26B19A327790093B1D0 /* network */ = {
+			isa = PBXGroup;
+			children = (
+				E684C26C19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h */,
+				E684C26D19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
 		E6D90D0C197B309700C7EFA1 = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +288,7 @@
 		E6D90D1E197B309700C7EFA1 /* football */ = {
 			isa = PBXGroup;
 			children = (
+				E684C26B19A327790093B1D0 /* network */,
 				E6255B481987867900C312B6 /* auth */,
 				E6255B391986039400C312B6 /* comments */,
 				E6517F5619A012FE00D53FDB /* games */,
@@ -482,6 +495,7 @@
 				E6D90D5D197B31F900C7EFA1 /* SCScoreboardTableViewCell.m in Sources */,
 				E6AD93F6198390740097E67A /* SCCommentThread.m in Sources */,
 				E6AD93F3198390660097E67A /* SCComment.m in Sources */,
+				E684C26E19A32E300093B1D0 /* NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

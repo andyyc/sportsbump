@@ -15,7 +15,11 @@
   if (self = [super init]) {
     _name = json[@"name"];
     _score = json[@"score"];
-    _day_of_week = json[@"day_of_week"];
+    _dayOfWeek = json[@"day_of_week"];
+    _awayTeam = json[@"away_team"];
+    _homeTeam = json[@"home_team"];
+    _homeTeamIcon = json[@"home_team_icon"];
+    _awayTeamIcon = json[@"away_team_icon"];
     _week = [json[@"week"] intValue];
     _gameId = [json[@"id"] intValue];
     _gamekey = json[@"gamekey"];

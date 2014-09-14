@@ -179,6 +179,8 @@
   
   if (!loggedIn) {
     [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:self];
+  } else {
+    [self performSegueWithIdentifier:@"CommentToComposerSegue" sender:self];
   }
 }
 
@@ -293,7 +295,8 @@
 - (IBAction)didTapAddComment:(id)sender
 {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  BOOL loggedIn = [[userDefaults objectForKey:@"key"] boolValue];
+  NSString *key = [userDefaults objectForKey:@"key"];
+  BOOL loggedIn = key && key.length > 0;
   
   if (!loggedIn) {
     [self performSegueWithIdentifier:@"CommentToLoginSegue" sender:sender];
@@ -337,6 +340,11 @@
   [self.tableView beginUpdates];
   [self.tableView reloadRowsAtIndexPaths:@[commentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
   [self.tableView endUpdates];
+}
+
+- (void)failedToPostCommentBump:(NSDictionary *)data
+{
+  // do nothing
 }
 
 @end

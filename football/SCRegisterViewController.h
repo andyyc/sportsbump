@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCDjangoRegisterClient.h"
 
-@interface SCRegisterViewController : UIViewController
+@interface SCRegisterViewController : UIViewController<SCDjangoRegisterClientDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *username;
 @property (weak, nonatomic) IBOutlet UITextField *email;

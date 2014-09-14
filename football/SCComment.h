@@ -16,7 +16,7 @@
 @property (strong, nonatomic) NSString *username;
 @property (assign, nonatomic) NSInteger points;
 @property (assign, nonatomic) BOOL hasBumped;
-@property (strong, nonatomic) NSDate * created;
+@property (strong, nonatomic) NSDate *createdAt;
 @property (strong, nonatomic) SCComment *parent;
 @property (strong, nonatomic) NSArray *children;
 @property (assign, nonatomic) NSInteger index;

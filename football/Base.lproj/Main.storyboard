@@ -107,32 +107,79 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GameCell" textLabel="trE-qk-huB" detailTextLabel="okV-ff-gVl" style="IBUITableViewCellStyleValue1" id="QUq-Tl-Drz" customClass="SCScoreboardTableViewCell">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QUq-Tl-Drz" id="5C9-Dw-f4n">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GameCell" rowHeight="54" id="eYe-ZD-iEt" customClass="SCScoreboardTableViewCell">
+                                <rect key="frame" x="0.0" y="55" width="320" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eYe-ZD-iEt" id="uDK-ZM-GIf">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="SEA at SFO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="trE-qk-huB">
-                                            <rect key="frame" x="15" y="11" width="91" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20-13" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HyV-Zm-hFV">
+                                            <rect key="frame" x="272" y="18" width="40" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6iq-Q2-BxB">
+                                            <rect key="frame" x="122" y="5" width="43" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="43" id="LAG-W9-W7g"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O4W-DE-hR3">
+                                            <rect key="frame" x="8" y="5" width="43" height="43"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="43" id="NVm-GB-mAS"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SEA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hR5-tC-GVO">
+                                            <rect key="frame" x="59" y="16" width="33" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="20-13 (4Q/11:58)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="okV-ff-gVl">
-                                            <rect key="frame" x="175" y="11" width="130" height="21"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SFO" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pI-Le-JZe">
+                                            <rect key="frame" x="173" y="16" width="34" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="at" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQB-1L-VZM">
+                                            <rect key="frame" x="100" y="18" width="14" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="O4W-DE-hR3" secondAttribute="bottom" constant="5" id="2Ay-Ud-RPM"/>
+                                        <constraint firstItem="6iq-Q2-BxB" firstAttribute="top" secondItem="uDK-ZM-GIf" secondAttribute="top" constant="5" id="2c8-5S-6f7"/>
+                                        <constraint firstAttribute="centerY" secondItem="6pI-Le-JZe" secondAttribute="centerY" id="DDz-tV-XPj"/>
+                                        <constraint firstItem="dQB-1L-VZM" firstAttribute="leading" secondItem="uDK-ZM-GIf" secondAttribute="leading" constant="100" id="DfL-0k-t2c"/>
+                                        <constraint firstItem="hR5-tC-GVO" firstAttribute="leading" secondItem="O4W-DE-hR3" secondAttribute="trailing" constant="8" id="Ke2-JJ-Aqt"/>
+                                        <constraint firstItem="6iq-Q2-BxB" firstAttribute="leading" secondItem="dQB-1L-VZM" secondAttribute="trailing" constant="8" id="Kg3-Zq-xa0"/>
+                                        <constraint firstItem="6pI-Le-JZe" firstAttribute="leading" secondItem="6iq-Q2-BxB" secondAttribute="trailing" constant="8" id="Ktx-28-ZAE"/>
+                                        <constraint firstAttribute="centerY" secondItem="O4W-DE-hR3" secondAttribute="centerY" id="Mfi-EW-gen"/>
+                                        <constraint firstAttribute="centerY" secondItem="dQB-1L-VZM" secondAttribute="centerY" id="N1T-NO-bsX"/>
+                                        <constraint firstAttribute="centerY" secondItem="hR5-tC-GVO" secondAttribute="centerY" id="fHd-QR-z5G"/>
+                                        <constraint firstAttribute="centerY" secondItem="HyV-Zm-hFV" secondAttribute="centerY" id="gdC-ky-gUQ"/>
+                                        <constraint firstItem="O4W-DE-hR3" firstAttribute="leading" secondItem="uDK-ZM-GIf" secondAttribute="leading" constant="8" id="mlZ-Fa-wBh"/>
+                                        <constraint firstAttribute="centerY" secondItem="6iq-Q2-BxB" secondAttribute="centerY" id="oqd-9b-yC3"/>
+                                        <constraint firstAttribute="trailing" secondItem="HyV-Zm-hFV" secondAttribute="trailing" constant="8" id="pDg-4E-7uf"/>
+                                        <constraint firstItem="O4W-DE-hR3" firstAttribute="top" secondItem="uDK-ZM-GIf" secondAttribute="top" constant="5" id="z5l-NK-fTa"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="name" destination="trE-qk-huB" id="00Y-k2-YHQ"/>
-                                    <outlet property="score" destination="okV-ff-gVl" id="g2g-2J-HJV"/>
+                                    <outlet property="awayTeam" destination="hR5-tC-GVO" id="bOm-nh-Wps"/>
+                                    <outlet property="awayTeamIcon" destination="O4W-DE-hR3" id="kwB-85-1Rx"/>
+                                    <outlet property="homeTeam" destination="6pI-Le-JZe" id="n5m-Lr-QTz"/>
+                                    <outlet property="homeTeamIcon" destination="6iq-Q2-BxB" id="4tM-O0-5Aj"/>
+                                    <outlet property="score" destination="HyV-Zm-hFV" id="hac-Iq-fe2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -556,7 +603,6 @@
                                     <outlet property="toggleArrow" destination="MFO-N3-aO6" id="pvT-Tj-lRZ"/>
                                     <outlet property="username" destination="WIK-ZL-iey" id="z73-2a-sm2"/>
                                     <outlet property="usernameView" destination="26N-nZ-qWB" id="gCM-CO-q4e"/>
-                                    <segue destination="IOB-O7-Ysk" kind="modal" identifier="CommentToComposerSegue" id="mtd-K4-xFU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -567,6 +613,7 @@
                     </tableView>
                     <connections>
                         <segue destination="EYT-7Y-uPW" kind="modal" identifier="CommentToLoginSegue" id="cMH-d5-Ns9"/>
+                        <segue destination="IOB-O7-Ysk" kind="modal" identifier="CommentToComposerSegue" id="gbT-WE-ukp"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RcS-eR-7En" userLabel="First Responder" sceneMemberID="firstResponder"/>

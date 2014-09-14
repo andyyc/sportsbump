@@ -8,19 +8,26 @@
 
 #import "SCCommentStore.h"
 #import "SCComment.h"
+#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
+
+#ifdef DEBUG
 
 #define COMMENTS_URL @"http://localhost:8888/api/comments/"
+
+#else
+
+#define COMMENTS_URL @"http://sportschub.com/api/comments/"
+
+#endif
 
 @implementation SCCommentStore
 
 - (void)fetchCommentsForGameKey:(NSString *)gameKey
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSString *commentsUrl = [NSString stringWithFormat:@"%@?gamekey=%@", COMMENTS_URL, gameKey];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:commentsUrl]];
-  
-  [request setHTTPMethod:@"GET"];
   [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   NSURLSessionDataTask *dataTask = [session
@@ -49,7 +56,7 @@
 
 - (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:COMMENTS_URL]];
   [request setHTTPMethod:@"POST"];
@@ -61,9 +68,7 @@
     postDictionary[@"parent"] = parent.commentId;
   }
 
-  NSError *error;
-  NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
-  [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:nil];
   [request setHTTPBody:postData];
   
   NSURLSessionDataTask *dataTask = [session

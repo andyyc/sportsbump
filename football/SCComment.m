@@ -18,7 +18,7 @@
     _text = json[@"text"];
     _points = [json[@"points_derived"] integerValue];
     _postId = [json[@"post"] integerValue];
-    _created = [self _stringToDate:json[@"created_at"]];
+    _createdAt = [self _stringToDate:json[@"created_at"]];
     _hasBumped = [json[@"has_bumped"] boolValue];
   }
   
@@ -34,11 +34,11 @@
 
 - (NSString *)createdTimeAgo
 {
-  if (!self.created) {
+  if (!self.createdAt) {
     return nil;
   }
   
-  NSTimeInterval createdTimeFromNowSeconds = [self.created timeIntervalSinceNow];
+  NSTimeInterval createdTimeFromNowSeconds = [self.createdAt timeIntervalSinceNow];
   
   // Get the system calendar
   NSCalendar *sysCalendar = [NSCalendar currentCalendar];
@@ -63,6 +63,8 @@
     return [NSString stringWithFormat:@"%dm", [dateComponents minute]];
   } else if ([dateComponents second] > 0) {
     return [NSString stringWithFormat:@"%ds", [dateComponents second]];
+  } else if ([dateComponents second] == 0) {
+    return @"now";
   }
   
   return nil;

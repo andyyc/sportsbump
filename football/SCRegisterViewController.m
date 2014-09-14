@@ -9,7 +9,15 @@
 #import "SCRegisterViewController.h"
 #import "SCDjangoRegisterClient.h"
 
+#ifdef DEBUG
+
 #define REGISTER_URL @"http://localhost:8888/rest-auth/register/"
+
+#else
+
+#define REGISTER_URL @"http://sportschub.com/rest-auth/register/"
+
+#endif
 
 @interface SCRegisterViewController ()
 

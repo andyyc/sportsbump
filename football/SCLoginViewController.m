@@ -9,7 +9,15 @@
 #import "SCLoginViewController.h"
 #import "SCDjangoLoginClient.h"
 
+#ifdef DEBUG
+
 #define LOGIN_URL @"http://localhost:8888/rest-auth/login/"
+
+#else
+
+#define LOGIN_URL @"http://sportschub.com/rest-auth/login/"
+
+#endif
 
 @interface SCLoginViewController ()
 

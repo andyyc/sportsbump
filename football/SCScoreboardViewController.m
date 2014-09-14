@@ -11,10 +11,19 @@
 #import "SCGameViewController.h"
 #import "SCScoreboardTableViewController.h"
 #import "SCScoreboard.h"
-#import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
+#import "SCURLSession.h"
+
+#ifdef DEBUG
 
 NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
 NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
+
+#else
+
+NSString *URL_SCORES = @"http://sportschub.com/api/week/%@";
+NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
+
+#endif
 
 @interface SCScoreboardViewController ()
 
@@ -33,9 +42,16 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+      // Custom initialization
     }
     return self;
+}
+
+- (void)dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:UIApplicationWillEnterForegroundNotification
+                                                 object:nil];
 }
 
 - (void)viewDidLoad
@@ -45,6 +61,10 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
   self.navigationItem.title = @"Scores";
   self.dateChoicesViews = [[NSMutableArray alloc] init];
   [self _fetchWeekChoices];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_willEnterForeground:)
+                                               name:UIApplicationWillEnterForegroundNotification
+                                             object:nil];
   
   if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -161,22 +181,20 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 
 - (void)_fetchWeekChoices
 {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
-  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+  SCURLSession *session = [[SCURLSession alloc] init];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_WEEK_CHOICES]];
   
-  NSURLSessionDataTask *dataTask = [session
-                                    dataTaskWithRequest:request
-                                    completionHandler:^(NSData *data,
-                                                        NSURLResponse *response,
-                                                        NSError *error)
+  NSURLSessionDataTask *dataTask = [session dataTaskWithAuthenticatedRequest:request
+                                                           completionHandler:^(NSData *data,
+                                                                               NSURLResponse *response,
+                                                                               NSError *error)
                                     {
                                       NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
                                       NSError *responseError;
                                       NSDictionary* jsonDict = [NSJSONSerialization
                                                                 JSONObjectWithData:data
-                                                                           options:kNilOptions
-                                                                             error:&responseError];
+                                                                options:kNilOptions
+                                                                error:&responseError];
                                       
                                       if (!error && httpResp.statusCode == 200) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -197,6 +215,7 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
                                         });
                                       }
                                     }];
+
   
   [dataTask resume];
 }
@@ -205,8 +224,7 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
 {
   NSString *dateChoiceId = self.weekChoiceIds[date];
   
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
-  NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+  SCURLSession *session = [[SCURLSession alloc] init];
   NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:URL_SCORES, dateChoiceId]]];
   
   if (self.scoreboardDataTask) {
@@ -214,7 +232,7 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
   }
 
   self.scoreboardDataTask = [session
-                              dataTaskWithRequest:request
+                              dataTaskWithAuthenticatedRequest:request
                               completionHandler:^(NSData *data,
                                                   NSURLResponse *response,
                                                   NSError *error)
@@ -239,6 +257,11 @@ NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
                               }];
   
   [self.scoreboardDataTask resume];
+}
+
+- (void)_willEnterForeground:(NSNotification *)notification
+{
+  [self _fetchWeekChoices];
 }
 
 @end

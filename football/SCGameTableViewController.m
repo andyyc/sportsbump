@@ -14,8 +14,15 @@
 #import "SCGame.h"
 #import "SCPlay.h"
 
-//NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/game/%@";
+#ifdef DEBUG
+
 NSString *URL_GAME_SUMMARY = @"http://localhost:8888/api/plays/?gamekey=%@";
+
+#else
+
+NSString *URL_GAME_SUMMARY = @"http://sportschub.com/api/plays/?gamekey=%@";
+
+#endif
 
 @interface SCGameTableViewController ()<NSURLSessionDelegate>
 

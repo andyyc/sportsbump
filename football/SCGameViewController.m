@@ -11,7 +11,7 @@
 #import "SCHighlightViewController.h"
 #import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
-NSString *URL_GAME = @"http://localhost:8888/api/game/%@";
+NSString *URL_GAME = @"http://sportschub.com/api/game/%@";
 
 @interface SCGameViewController ()<NSURLSessionDelegate>
 

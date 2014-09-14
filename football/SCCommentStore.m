@@ -10,7 +10,15 @@
 #import "SCComment.h"
 #import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
+#ifdef DEBUG
+
 #define COMMENTS_URL @"http://localhost:8888/api/comments/"
+
+#else
+
+#define COMMENTS_URL @"http://sportschub.com/api/comments/"
+
+#endif
 
 @implementation SCCommentStore
 

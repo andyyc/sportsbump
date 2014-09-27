@@ -10,15 +10,7 @@
 #import "SCDjangoLogoutClient.h"
 #import "SCLoginViewController.h"
 
-#ifdef DEBUG
-
-#define LOGOUT_URL @"http://localhost:8888/rest-auth/logout/"
-
-#else
-
-#define LOGOUT_URL @"http://sportschub.com/rest-auth/logout/"
-
-#endif
+#define LOGOUT_URL kBaseURL @"/rest-auth/logout/"
 
 @interface SCSettingsTableViewController ()<SCDjangoLogoutClientDelegate>
 

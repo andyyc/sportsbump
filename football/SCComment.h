@@ -24,6 +24,5 @@
 @property (assign, nonatomic) BOOL shouldHideCommentText;
 
 - (instancetype)initWithJson:(NSDictionary *)json;
-- (NSString *)createdTimeAgo;
 
 @end

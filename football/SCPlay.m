@@ -7,6 +7,7 @@
 //
 
 #import "SCPlay.h"
+#import "SCDateHelpers.h"
 
 @implementation SCPlay
 
@@ -19,11 +20,29 @@
     _points = [jsonDict[@"points"] intValue];
     _quarter = jsonDict[@"quarter"];
     _time = jsonDict[@"time"];
+    NSString *teamString = jsonDict[@"team"];
     
-    NSString *videoUrlString = jsonDict[@"video_url"];
-    if (videoUrlString && videoUrlString.length > 0) {
-       _videoUrl = [NSURL URLWithString:videoUrlString];
+    if (teamString.length > 0) {
+      _team = teamString;
     }
+    
+    NSString *teamIconString = jsonDict[@"team_icon"];
+    
+    if (teamIconString && teamIconString.length > 0) {
+      _teamIcon = teamIconString;
+    }
+    
+    NSString *videoUrlString = jsonDict[@"mp4_url"];
+    if (videoUrlString && videoUrlString.length > 0) {
+      _videoUrl = [NSURL URLWithString:videoUrlString];
+    }
+    
+    NSString *gfyUrlString = jsonDict[@"gfy_url"];
+    if (gfyUrlString && gfyUrlString.length > 0) {
+      _gfyUrl = [NSURL URLWithString:gfyUrlString];
+    }
+    
+    _createdAt = stringToDate(jsonDict[@"created_at"]);
   }
   
   return self;

@@ -13,16 +13,6 @@
 #import "SCGame.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-#ifdef DEBUG
-
-NSString *STATIC_BASE_URL = @"http://localhost:8888%@";
-
-#else
-
-NSString *STATIC_BASE_URL = @"http://www.sportschub.com%@";
-
-#endif
-
 @interface SCScoreboardTableViewController ()
 
 @end
@@ -87,8 +77,8 @@ NSString *STATIC_BASE_URL = @"http://www.sportschub.com%@";
   gameCell.gameTime.text = nil;
   gameCell.awayTeam.text = game.awayTeam;
   gameCell.homeTeam.text = game.homeTeam;
-  NSString *awayTeamIconURLString = [NSString stringWithFormat:STATIC_BASE_URL, game.awayTeamIcon];
-  NSString *homeTeamIconURLString = [NSString stringWithFormat:STATIC_BASE_URL, game.homeTeamIcon];
+  NSString *awayTeamIconURLString = [NSString stringWithFormat:kFormatBaseURL, game.awayTeamIcon];
+  NSString *homeTeamIconURLString = [NSString stringWithFormat:kFormatBaseURL, game.homeTeamIcon];
   [gameCell.awayTeamIcon sd_setImageWithURL:[NSURL URLWithString:awayTeamIconURLString]];
   [gameCell.homeTeamIcon sd_setImageWithURL:[NSURL URLWithString:homeTeamIconURLString]];
   

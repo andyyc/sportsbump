@@ -13,17 +13,8 @@
 #import "SCScoreboard.h"
 #import "SCURLSession.h"
 
-#ifdef DEBUG
-
-NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
-NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
-
-#else
-
-NSString *URL_SCORES = @"http://sportschub.com/api/week/%@";
-NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
-
-#endif
+#define URL_SCORES kBaseURL @"/api/week/%@"
+#define URL_WEEK_CHOICES kBaseURL @"/api/week-choices"
 
 @interface SCScoreboardViewController ()
 

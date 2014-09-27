@@ -14,9 +14,13 @@
 @property (strong, nonatomic) NSString *down;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSURL *videoUrl;
+@property (strong, nonatomic) NSURL *gfyUrl;
 @property (strong, nonatomic) NSString *quarter;
 @property (strong, nonatomic) NSString *time;
 @property (assign, nonatomic) NSInteger points;
+@property (strong, nonatomic) NSString *team;
+@property (strong, nonatomic) NSString *teamIcon;
+@property (strong, nonatomic) NSDate *createdAt;
 
 - (instancetype)initWithJson:(NSDictionary *)jsonDict;
 

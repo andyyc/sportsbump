@@ -14,6 +14,7 @@
 #import "SCCommentComposerViewController.h"
 #import "SCGame.h"
 #import "SCCommentBumpStore.h"
+#import "SCDateHelpers.h"
 
 @interface SCCommentTableViewController ()
 
@@ -229,7 +230,7 @@
   } else {
     cell.toggleArrow.text = @"▾";
   }
-  cell.timePosted.text = [NSString stringWithFormat:@"∙ %@", [comment createdTimeAgo]];
+  cell.timePosted.text = [NSString stringWithFormat:@"∙ %@", createdTimeAgo(comment.createdAt)];
 }
 
 - (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath

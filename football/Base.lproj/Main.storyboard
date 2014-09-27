@@ -190,23 +190,122 @@
             </objects>
             <point key="canvasLocation" x="-5110" y="-1017"/>
         </scene>
-        <!--Table View Controller - Feed-->
+        <!--Feed Table View Controller - Feed-->
         <scene sceneID="qc9-Pg-n1g">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iBU-zL-Hbl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="EH2-9m-PDi" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Wx2-gS-lVo">
+                <tableViewController id="EH2-9m-PDi" customClass="SCFeedTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="71" sectionHeaderHeight="22" sectionFooterHeight="22" id="Wx2-gS-lVo">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="FRJ-jS-x1S">
-                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FeedItemCellWithImage" rowHeight="71" id="FRJ-jS-x1S" customClass="SCFeedItemTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="71"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FRJ-jS-x1S" id="kw4-0y-IBp">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZqK-76-FVh">
+                                            <rect key="frame" x="5" y="10" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="Ai3-SA-4XX"/>
+                                                <constraint firstAttribute="height" constant="50" id="B43-WZ-dbb"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Juke and 360 by Jerick Mckinnon. Test more lines.blahblahbalh. godzilla. minnesotra vikings" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="222" translatesAutoresizingMaskIntoConstraints="NO" id="R3z-9J-Tdd">
+                                            <rect key="frame" x="63" y="10" width="222" height="50"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="tTv-d4-2pC"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3m" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IU9-SR-IuS">
+                                            <rect key="frame" x="293" y="10" width="19" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🎥" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vqc-zk-1vM">
+                                            <rect key="frame" x="293" y="34" width="19" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="ZqK-76-FVh" firstAttribute="top" secondItem="kw4-0y-IBp" secondAttribute="top" constant="10" id="3xK-ut-g6g"/>
+                                        <constraint firstItem="IU9-SR-IuS" firstAttribute="top" secondItem="kw4-0y-IBp" secondAttribute="top" constant="10" id="5V7-3g-lHN"/>
+                                        <constraint firstAttribute="trailing" secondItem="Vqc-zk-1vM" secondAttribute="trailing" constant="8" id="7yS-UZ-4mp"/>
+                                        <constraint firstItem="Vqc-zk-1vM" firstAttribute="top" secondItem="IU9-SR-IuS" secondAttribute="bottom" constant="8" id="A69-zx-rBb"/>
+                                        <constraint firstAttribute="bottom" secondItem="R3z-9J-Tdd" secondAttribute="bottom" constant="10" id="GnR-lB-nSA"/>
+                                        <constraint firstItem="R3z-9J-Tdd" firstAttribute="leading" secondItem="ZqK-76-FVh" secondAttribute="trailing" constant="8" id="GzP-Ov-tgD"/>
+                                        <constraint firstItem="R3z-9J-Tdd" firstAttribute="top" secondItem="kw4-0y-IBp" secondAttribute="top" constant="10" id="NYS-dm-PWn"/>
+                                        <constraint firstAttribute="trailing" secondItem="R3z-9J-Tdd" secondAttribute="trailing" constant="35" id="RnN-Tn-jMu"/>
+                                        <constraint firstItem="ZqK-76-FVh" firstAttribute="leading" secondItem="kw4-0y-IBp" secondAttribute="leading" constant="5" id="gCL-ce-ycO"/>
+                                        <constraint firstAttribute="trailing" secondItem="IU9-SR-IuS" secondAttribute="trailing" constant="8" id="xxS-9f-JEy"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="createdTimeAgo" destination="IU9-SR-IuS" id="6qa-su-QN2"/>
+                                    <outlet property="feedText" destination="R3z-9J-Tdd" id="7yr-mZ-lZT"/>
+                                    <outlet property="leftImage" destination="ZqK-76-FVh" id="dvx-EU-xIg"/>
+                                    <outlet property="videoLabel" destination="Vqc-zk-1vM" id="swK-vJ-ljR"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="FeedItemCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FeedItemCell" rowHeight="71" id="zvg-YD-4Sx" customClass="SCFeedItemTableViewCell">
+                                <rect key="frame" x="0.0" y="157" width="320" height="71"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zvg-YD-4Sx" id="KyW-5Z-euT">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Juke and 360 by Jerick Mckinnon. Test more lines.blahblahbalh. godzilla. minnesotra vikings" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="277" translatesAutoresizingMaskIntoConstraints="NO" id="qbn-M2-qw3">
+                                            <rect key="frame" x="8" y="10" width="277" height="50"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="ebe-sF-eGF"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3m" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lr6-6C-jlH">
+                                            <rect key="frame" x="293" y="10" width="19" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🎥" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3h-if-Jom">
+                                            <rect key="frame" x="293" y="34" width="19" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="lr6-6C-jlH" firstAttribute="top" secondItem="KyW-5Z-euT" secondAttribute="top" constant="10" id="DyF-Ki-kRm"/>
+                                        <constraint firstAttribute="trailing" secondItem="qbn-M2-qw3" secondAttribute="trailing" constant="35" id="a4H-zV-fye"/>
+                                        <constraint firstItem="qbn-M2-qw3" firstAttribute="top" secondItem="KyW-5Z-euT" secondAttribute="top" constant="10" id="cvG-HE-l8B"/>
+                                        <constraint firstItem="qbn-M2-qw3" firstAttribute="leading" secondItem="KyW-5Z-euT" secondAttribute="leading" constant="8" id="pQr-nB-AYg"/>
+                                        <constraint firstItem="q3h-if-Jom" firstAttribute="top" secondItem="lr6-6C-jlH" secondAttribute="bottom" constant="8" id="rMe-37-iyg"/>
+                                        <constraint firstAttribute="trailing" secondItem="q3h-if-Jom" secondAttribute="trailing" constant="8" id="ry1-SA-dlL"/>
+                                        <constraint firstAttribute="bottom" secondItem="qbn-M2-qw3" secondAttribute="bottom" constant="10" id="vt0-gD-qTr"/>
+                                        <constraint firstAttribute="trailing" secondItem="lr6-6C-jlH" secondAttribute="trailing" constant="8" id="xIC-Sv-je1"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="createdTimeAgo" destination="lr6-6C-jlH" id="v3l-Lh-8VG"/>
+                                    <outlet property="feedText" destination="qbn-M2-qw3" id="NgV-zl-hen"/>
+                                    <outlet property="videoLabel" destination="q3h-if-Jom" id="mPB-3c-Dsc"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -220,11 +319,11 @@
             </objects>
             <point key="canvasLocation" x="-4832" y="-296"/>
         </scene>
-        <!--Navigation Controller - Item-->
+        <!--Navigation Controller - Feed-->
         <scene sceneID="Xqa-Mb-oo0">
             <objects>
                 <navigationController definesPresentationContext="YES" id="0Xi-MV-CWE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="6wy-Ep-DyB"/>
+                    <tabBarItem key="tabBarItem" title="Feed" id="6wy-Ep-DyB"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WnK-gn-1Ej">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1164,9 +1263,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="0Xi-MV-CWE" kind="relationship" relationship="viewControllers" id="k1u-hN-N4Z"/>
                         <segue destination="l6z-sK-EVj" kind="relationship" relationship="viewControllers" id="CqI-VC-rOl"/>
                         <segue destination="TfQ-od-EgB" kind="relationship" relationship="viewControllers" id="B8z-8B-1XU"/>
-                        <segue destination="0Xi-MV-CWE" kind="relationship" relationship="viewControllers" id="k1u-hN-N4Z"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hpn-1V-ILi" sceneMemberID="firstResponder"/>

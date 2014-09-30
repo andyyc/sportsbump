@@ -17,7 +17,7 @@
 #define URL_WEEK_CHOICES kBaseURL @"/api/week-choices"
 
 @interface SCScoreboardViewController ()
-
+@property (weak, nonatomic) IBOutlet UIView *dateScrollViewContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (strong, nonatomic) NSArray *weekChoices;
 @property (strong, nonatomic) NSArray *weekChoiceIds;
@@ -49,6 +49,11 @@
 {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.dateScrollViewContainer.layer.shadowColor = [[UIColor lightGrayColor] CGColor];
+  self.dateScrollViewContainer.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+  self.dateScrollViewContainer.layer.shadowRadius = 2.0f;
+  self.dateScrollViewContainer.layer.shadowOpacity = 0.5f;
+  
   self.navigationItem.title = @"Scores";
   self.dateChoicesViews = [[NSMutableArray alloc] init];
 

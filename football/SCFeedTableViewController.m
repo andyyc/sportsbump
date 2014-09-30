@@ -13,12 +13,12 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "SCDateHelpers.h"
-
-#define URL_FEED kBaseURL @"/api/feed"
+#import "SCFeed.h"
+#import "SCFeedStore.h"
 
 @interface SCFeedTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray *feed;
+@property (nonatomic, strong) SCFeedStore *feedStore;
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
 
 @end
@@ -43,13 +43,18 @@
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-  
-  _feed = [[NSMutableArray alloc] init];
+  _feedStore = [[SCFeedStore alloc] init];
+  _feedStore.delegate = self;
+  self.refreshControl = [[UIRefreshControl alloc] init];
+  [self.refreshControl addTarget:self
+                          action:@selector(_fetchFeedWithFeedStore)
+                forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  [self _fetchFeed];
+  [super viewWillAppear:animated];
+  [self _fetchFeedWithFeedStore];
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,63 +74,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.feed.count;
+    return self.feedStore.feed.items.count;
 }
-
-#pragma mark - Private
-
-- (void)_fetchFeed
-{
-  SCURLSession *session = [[SCURLSession alloc] init];
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_FEED]];
-  
-  NSURLSessionDataTask *dataTask = [session dataTaskWithAuthenticatedRequest:request
-                                                           completionHandler:^(NSData *data,
-                                                                               NSURLResponse *response,
-                                                                               NSError *error)
-                                    {
-                                      NSHTTPURLResponse *httpResp = (NSHTTPURLResponse*) response;
-                                      NSError *responseError;
-                                      NSDictionary* jsonDict = [NSJSONSerialization
-                                                                 JSONObjectWithData:data
-                                                                 options:kNilOptions
-                                                                 error:&responseError];
-                                      
-                                      if (!error && httpResp.statusCode == 200) {
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                          NSLog(@"%@", jsonDict);
-                                          _feed = [[NSMutableArray alloc] init];
-                                          for (NSDictionary *jsonPlay in jsonDict[@"results"]) {
-                                            [self.feed addObject:[[SCPlay alloc] initWithJson:jsonPlay]];
-                                          }
-//                                          self.weekChoices = jsonDict[@"week_choices"];
-//                                          self.weekChoiceIds = jsonDict[@"week_choice_ids"];
-//                                          CGSize dateScrollViewSize = self.dateScrollView.frame.size;
-//                                          self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
-//                                          
-//                                          for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
-//                                            [self.dateChoicesViews addObject:[NSNull null]];
-//                                          }
-//                                          [self loadVisiblePages];
-//                                          [self _fetchAndReloadScoreboardForDate:0];
-                                          [self.tableView reloadData];
-                                        });
-                                      } else {
-                                        // alert for error saving / updating note
-                                        dispatch_async(dispatch_get_main_queue(), ^{
-                                        });
-                                      }
-                                    }];
-  
-  
-  [dataTask resume];
-}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   SCFeedItemTableViewCell *cell;
-  SCPlay *play = self.feed[indexPath.row];
+  SCPlay *play = self.feedStore.feed.items[indexPath.row];
 
   if (play.team) {
     cell = [tableView dequeueReusableCellWithIdentifier:@"FeedItemCellWithImage" forIndexPath:indexPath];
@@ -151,11 +106,29 @@
   return cell;
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  // check if indexPath.row is last row
+  // Perform operation to load new Cell's.
+  if (indexPath.row == [self.feedStore.feed.items count] - 1) {
+    [self.feedStore fetchNextFeed];
+  }
+}
+
+#pragma mark - Private
+
+- (void)_fetchFeedWithFeedStore
+{
+  [_feedStore fetchFeed];
+}
+
 - (void) _handleTapVideo:(UITapGestureRecognizer *)gesture
 {
   CGPoint location = [gesture locationInView:self.tableView];
   NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-  SCPlay *play = self.feed[indexPath.row];
+  SCPlay *play = self.feedStore.feed.items[indexPath.row];
   
   _moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:play.videoUrl];
   
@@ -231,5 +204,31 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - SCFeedStoreDelegate
+
+- (void)didFinishFetchingFeed:(SCFeedStore *)feedStore
+{
+  [self.refreshControl endRefreshing];
+  [self.tableView reloadData];
+}
+
+- (void)didFailFetchingFeed:(SCFeedStore *)feedStore
+{
+  [self.refreshControl endRefreshing];
+}
+
+- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingNextInsertedIndices:(NSArray *)insertedIndices
+{
+  NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+  
+  for (NSNumber *index in insertedIndices) {
+    [insertIndexPaths addObject:[NSIndexPath indexPathForRow:[index intValue] inSection:0]];
+  }
+  
+  [self.tableView beginUpdates];
+  [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
+  [self.tableView endUpdates];
+}
 
 @end

@@ -26,6 +26,8 @@
 		E6761BD719D40D70000A47B3 /* SCFeedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6761BD619D40D70000A47B3 /* SCFeedTableViewController.m */; };
 		E6761BDA19D69C69000A47B3 /* SCFeedItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6761BD919D69C69000A47B3 /* SCFeedItemTableViewCell.m */; };
 		E6761BE119D7342D000A47B3 /* SCDateHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E6761BE019D7342D000A47B3 /* SCDateHelpers.m */; };
+		E6761BE519D7ED7E000A47B3 /* SCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = E6761BE419D7ED7E000A47B3 /* SCFeed.m */; };
+		E6761BE819D80255000A47B3 /* SCFeedStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E6761BE719D80255000A47B3 /* SCFeedStore.m */; };
 		E6AD93E719837EAB0097E67A /* SCCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */; };
 		E6AD93EA19838B110097E67A /* SCCommentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93E919838B110097E67A /* SCCommentTableViewController.m */; };
 		E6AD93F3198390660097E67A /* SCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AD93F2198390660097E67A /* SCComment.m */; };
@@ -107,6 +109,10 @@
 		E6761BDF19D7342D000A47B3 /* SCDateHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDateHelpers.h; sourceTree = "<group>"; };
 		E6761BE019D7342D000A47B3 /* SCDateHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDateHelpers.m; sourceTree = "<group>"; };
 		E6761BE219D73B51000A47B3 /* SCConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCConstants.h; sourceTree = "<group>"; };
+		E6761BE319D7ED7E000A47B3 /* SCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFeed.h; sourceTree = "<group>"; };
+		E6761BE419D7ED7E000A47B3 /* SCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFeed.m; sourceTree = "<group>"; };
+		E6761BE619D80255000A47B3 /* SCFeedStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFeedStore.h; sourceTree = "<group>"; };
+		E6761BE719D80255000A47B3 /* SCFeedStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFeedStore.m; sourceTree = "<group>"; };
 		E6AD93E519837EAB0097E67A /* SCCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewCell.h; sourceTree = "<group>"; };
 		E6AD93E619837EAB0097E67A /* SCCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCCommentTableViewCell.m; sourceTree = "<group>"; };
 		E6AD93E819838B110097E67A /* SCCommentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCCommentTableViewController.h; sourceTree = "<group>"; };
@@ -281,6 +287,10 @@
 			children = (
 				E6761BD519D40D70000A47B3 /* SCFeedTableViewController.h */,
 				E6761BD619D40D70000A47B3 /* SCFeedTableViewController.m */,
+				E6761BE319D7ED7E000A47B3 /* SCFeed.h */,
+				E6761BE419D7ED7E000A47B3 /* SCFeed.m */,
+				E6761BE619D80255000A47B3 /* SCFeedStore.h */,
+				E6761BE719D80255000A47B3 /* SCFeedStore.m */,
 			);
 			name = feed;
 			sourceTree = "<group>";
@@ -535,7 +545,9 @@
 				E6761BD719D40D70000A47B3 /* SCFeedTableViewController.m in Sources */,
 				E6D90D60197B31F900C7EFA1 /* SCGameViewController.m in Sources */,
 				E6D90D63197B31F900C7EFA1 /* SCScoreboardViewController.m in Sources */,
+				E6761BE819D80255000A47B3 /* SCFeedStore.m in Sources */,
 				E6D90D61197B31F900C7EFA1 /* SCHighlightViewController.m in Sources */,
+				E6761BE519D7ED7E000A47B3 /* SCFeed.m in Sources */,
 				E6AD93F9198390850097E67A /* SCCommentStore.m in Sources */,
 				E6761BE119D7342D000A47B3 /* SCDateHelpers.m in Sources */,
 				E66838B819B3F100001CA7AB /* SCURLSession.m in Sources */,

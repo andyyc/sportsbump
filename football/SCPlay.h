@@ -21,6 +21,8 @@
 @property (strong, nonatomic) NSString *team;
 @property (strong, nonatomic) NSString *teamIcon;
 @property (strong, nonatomic) NSDate *createdAt;
+@property (strong, nonatomic) NSString *createdAtRaw;
+@property (strong, nonatomic) NSString *playId;
 
 - (instancetype)initWithJson:(NSDictionary *)jsonDict;
 

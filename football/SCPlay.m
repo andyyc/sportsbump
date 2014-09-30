@@ -14,6 +14,7 @@
 - (instancetype)initWithJson:(NSDictionary *)jsonDict
 {
   if (self = [super init]) {
+    _playId = jsonDict[@"id"];
     _gamekey = jsonDict[@"gamekey"];
     _down = jsonDict[@"down"];
     _text = jsonDict[@"text"];
@@ -43,6 +44,7 @@
     }
     
     _createdAt = stringToDate(jsonDict[@"created_at"]);
+    _createdAtRaw = jsonDict[@"created_at"];
   }
   
   return self;

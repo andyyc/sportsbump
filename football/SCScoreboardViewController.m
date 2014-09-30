@@ -51,7 +51,7 @@
   // Do any additional setup after loading the view.
   self.navigationItem.title = @"Scores";
   self.dateChoicesViews = [[NSMutableArray alloc] init];
-  [self _fetchWeekChoices];
+
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(_willEnterForeground:)
                                                name:UIApplicationWillEnterForegroundNotification
@@ -62,8 +62,10 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
   [super viewWillAppear:animated];
+  [self _fetchWeekChoices];
 }
 
 #pragma mark - dateScrollView

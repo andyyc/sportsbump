@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SCFeedStore.h"
 
-@interface SCFeedTableViewController : UITableViewController
+@interface SCFeedTableViewController : UITableViewController<SCFeedStoreDelegate>
+
+- (void)didFinishFetchingFeed:(SCFeedStore *)feedStore;
+- (void)didFailFetchingFeed:(SCFeedStore *)feedStore;
+
+- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingNextInsertedIndices:(NSArray *)insertedIndices;
 
 @end

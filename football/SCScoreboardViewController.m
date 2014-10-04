@@ -13,21 +13,13 @@
 #import "SCScoreboard.h"
 #import "SCURLSession.h"
 
-#ifdef DEBUG
-
-NSString *URL_SCORES = @"http://localhost:8888/api/week/%@";
-NSString *URL_WEEK_CHOICES = @"http://localhost:8888/api/week-choices";
-
-#else
-
-NSString *URL_SCORES = @"http://sportschub.com/api/week/%@";
-NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
-
-#endif
+#define URL_SCORES kBaseURL @"/api/week/%@"
+#define URL_WEEK_CHOICES kBaseURL @"/api/week-choices"
 
 @interface SCScoreboardViewController ()
-
+@property (weak, nonatomic) IBOutlet UIView *dateScrollViewContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
+@property (assign, nonatomic) BOOL hasFetchedDate;
 @property (strong, nonatomic) NSArray *weekChoices;
 @property (strong, nonatomic) NSArray *weekChoiceIds;
 @property (strong, nonatomic) NSMutableArray *dateChoicesViews;
@@ -58,9 +50,14 @@ NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
 {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.dateScrollViewContainer.layer.shadowColor = [[UIColor lightGrayColor] CGColor];
+  self.dateScrollViewContainer.layer.shadowOffset = CGSizeMake(1.0f, 1.0f);
+  self.dateScrollViewContainer.layer.shadowRadius = 2.0f;
+  self.dateScrollViewContainer.layer.shadowOpacity = 0.5f;
+  
   self.navigationItem.title = @"Scores";
   self.dateChoicesViews = [[NSMutableArray alloc] init];
-  [self _fetchWeekChoices];
+
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(_willEnterForeground:)
                                                name:UIApplicationWillEnterForegroundNotification
@@ -69,10 +66,16 @@ NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
   if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
     self.automaticallyAdjustsScrollViewInsets = NO;
   }
+  [self _fetchWeekChoices];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
   [super viewWillAppear:animated];
+  if ([self hasFetchedDate]) {
+    // only want to fetch the first time
+    [self _fetchAndReloadScoreboardForDate:[self currentPage]];
+  }
 }
 
 #pragma mark - dateScrollView
@@ -248,6 +251,7 @@ NSString *URL_WEEK_CHOICES = @"http://sportschub.com/api/week-choices";
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                     self.scoreboardTableViewController.scoreboard = [[SCScoreboard alloc] initWithGamesArray:jsonDict];
                                     [self.scoreboardTableViewController.tableView reloadData];
+                                    self.hasFetchedDate = YES;
                                   });
                                 } else {
                                   // alert for error saving / updating note

@@ -9,6 +9,7 @@
 #import "SCCommentComposerViewController.h"
 #import "SCComment.h"
 #import "SCCommentStore.h"
+#import "SCDateHelpers.h"
 
 @interface SCCommentComposerViewController ()
 
@@ -41,8 +42,9 @@
     self.parentCommentPoints.text = nil;
   }
   
-  if ([self.comment createdTimeAgo]) {
-    self.parentCommentCreatedTime.text = [NSString stringWithFormat:@"∙ %@", [self.comment createdTimeAgo]];
+  NSString *createdTimeAgoString = createdTimeAgo(self.comment.createdAt);
+  if (createdTimeAgoString) {
+    self.parentCommentCreatedTime.text = [NSString stringWithFormat:@"∙ %@", createdTimeAgoString];
   } else {
     self.parentCommentCreatedTime.text = nil;
   }

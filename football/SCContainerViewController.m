@@ -8,6 +8,7 @@
 
 #import "SCContainerViewController.h"
 #import "SCGameTableViewController.h"
+#import "SCCommentTableViewController.h"
 
 #define SegueIdentifierFirst @"GameContainerToPlayByPlaySegue"
 #define SegueIdentifierSecond @"GameContainerToCommentsSegue"
@@ -63,6 +64,12 @@
   // Instead of creating new VCs on each seque we want to hang on to existing
   // instances if we have it. Remove the second condition of the following
   // two if statements to get new VC instances instead.
+  if ([segue.identifier isEqualToString:SegueIdentifierSecond]) {
+    SCCommentTableViewController *commentTableViewController = [segue destinationViewController];
+    commentTableViewController.postId = self.game.postId;
+    commentTableViewController.titleText = self.game.name;
+  }
+  
   if ([segue.destinationViewController respondsToSelector:@selector(setGame:)]) {
     [segue.destinationViewController performSelector:@selector(setGame:) withObject:self.game];
   }

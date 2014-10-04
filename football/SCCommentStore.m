@@ -10,23 +10,15 @@
 #import "SCComment.h"
 #import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
-#ifdef DEBUG
-
-#define COMMENTS_URL @"http://localhost:8888/api/comments/"
-
-#else
-
-#define COMMENTS_URL @"http://sportschub.com/api/comments/"
-
-#endif
+#define COMMENTS_URL kBaseURL @"/api/comments/"
 
 @implementation SCCommentStore
 
-- (void)fetchCommentsForGameKey:(NSString *)gameKey
+- (void)fetchCommentsForPostId:(NSInteger)postId
 {
   NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-  NSString *commentsUrl = [NSString stringWithFormat:@"%@?gamekey=%@", COMMENTS_URL, gameKey];
+  NSString *commentsUrl = [NSString stringWithFormat:@"%@?post_id=%@", COMMENTS_URL, @(postId)];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:commentsUrl]];
   [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   

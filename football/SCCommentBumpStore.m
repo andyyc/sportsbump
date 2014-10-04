@@ -9,15 +9,7 @@
 #import "SCCommentBumpStore.h"
 #import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 
-#ifdef DEBUG
-
-#define COMMENT_BUMP_URL @"http://localhost:8888/api/comment-bump/"
-
-#else
-
-#define COMMENT_BUMP_URL @"http://sportschub.com/api/comment-bump/"
-
-#endif
+#define COMMENT_BUMP_URL kBaseURL @"/api/comment-bump/"
 
 @implementation SCCommentBumpStore
 

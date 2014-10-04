@@ -22,7 +22,7 @@
 
 @property (weak) id <SCCommentStoreDelegate> delegate;
 
-- (void)fetchCommentsForGameKey:(NSString *)gameKey;
+- (void)fetchCommentsForPostId:(NSInteger)postId;
 - (void)postCommentText:(NSString *)text forPost:(NSInteger)postId andParent:(SCComment *)parent;
 
 @end

@@ -21,6 +21,7 @@
 {
   if (self=[super init]) {
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
+    configuration.timeoutIntervalForRequest = 60;
     self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
   }
   
@@ -49,7 +50,6 @@
 
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler
 {
-  NSLog(@"hello");
 }
 
 @end

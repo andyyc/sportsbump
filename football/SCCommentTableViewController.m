@@ -14,10 +14,10 @@
 #import "SCCommentComposerViewController.h"
 #import "SCGame.h"
 #import "SCCommentBumpStore.h"
+#import "SCDateHelpers.h"
 
 @interface SCCommentTableViewController ()
 
-@property (strong, nonatomic) SCCommentThread *commentThread;
 @property (strong, nonatomic) SCCommentTableViewCell *dummyCell;
 @property (strong, nonatomic) SCCommentTableViewCell *dummyCellCollapsed;
 @property (strong, nonatomic) NSMutableArray *collapsedComments;
@@ -55,7 +55,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  [_commentStore fetchCommentsForGameKey:self.game.gamekey];
+  [_commentStore fetchCommentsForPostId:self.postId];
 }
 
 - (void)didReceiveMemoryWarning
@@ -229,7 +229,7 @@
   } else {
     cell.toggleArrow.text = @"▾";
   }
-  cell.timePosted.text = [NSString stringWithFormat:@"∙ %@", [comment createdTimeAgo]];
+  cell.timePosted.text = [NSString stringWithFormat:@"∙ %@", createdTimeAgo(comment.createdAt)];
 }
 
 - (SCCommentTableViewCell *)_reusableCellForIndexPath:(NSIndexPath *)indexPath
@@ -280,8 +280,8 @@
     if ([sender isKindOfClass:[UIButton class]]) {
       // user tapped add comment
       SCComment *parentCommentForGameThread = [[SCComment alloc] init];
-      parentCommentForGameThread.postId = self.game.postId;
-      parentCommentForGameThread.text = self.game.name;
+      parentCommentForGameThread.postId = self.postId;
+      parentCommentForGameThread.text = self.titleText;
       composerViewController.comment = parentCommentForGameThread;
     } else {
       NSIndexPath *selectedRow = [self.tableView indexPathForSelectedRow];

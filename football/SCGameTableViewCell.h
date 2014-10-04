@@ -11,7 +11,9 @@
 @interface SCGameTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *downLabel;
 @property (weak, nonatomic) IBOutlet UILabel *videoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *playLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *teamIconView;
 
 @end

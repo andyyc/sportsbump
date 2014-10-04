@@ -13,12 +13,14 @@
 #import "NSURLSessionConfiguration+NSURLSessionConfigurationAdditions.h"
 #import "SCGame.h"
 #import "SCPlay.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 #define URL_GAME_SUMMARY kBaseURL "/api/plays/?gamekey=%@"
 
 @interface SCGameTableViewController ()<NSURLSessionDelegate>
 
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
+@property (strong, nonatomic) SCGameTableViewCell *dummyCell;
 
 @end
 
@@ -96,33 +98,63 @@
   return [[self.summary playsForSection:section] count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  SCPlay *play = [self.summary playsForSection:[indexPath section]][[indexPath row]];
+  SCGameTableViewCell *dummyCell = [self _dummyCellForPlay:play];
+  
+  [self configureCell:dummyCell forRowAtIndexPath:indexPath];
+  [dummyCell layoutIfNeeded];
+  
+  CGSize size = [dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  
+  return size.height+1;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   // Configure the cell...
+  SCGameTableViewCell *playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCell" forIndexPath:indexPath];
+  
+  [self configureCell:playCell forRowAtIndexPath:indexPath];
+  
+  SCPlay *play = [self.summary playsForSection:[indexPath section]][[indexPath row]];
+  
+  if (play.videoUrl) {
+    playCell.userInteractionEnabled = YES;
+  }
+  
+  if (play.teamIcon) {
+    NSString *teamIconURLString = [NSString stringWithFormat:kFormatBaseURL, play.teamIcon];
+    [playCell.teamIconView sd_setImageWithURL:[NSURL URLWithString:teamIconURLString]];
+  }
+  
+  return playCell;
+}
+
+- (void)configureCell:(SCGameTableViewCell *)playCell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
   long row = [indexPath row];
   long section = [indexPath section];
   
   SCPlay *play = [self.summary playsForSection:section][row];
-  SCGameTableViewCell *playCell;
   
   if (play.videoUrl) {
-    playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCellWithVideo" forIndexPath:indexPath];
     playCell.videoLabel.text = @"🎥";
+    //    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTapVideo:)];
+    //    [playCell.videoLabel setUserInteractionEnabled:YES];
+    //    [playCell.videoLabel addGestureRecognizer:tapGestureRecognizer];
   } else {
-    playCell = [tableView dequeueReusableCellWithIdentifier:@"PlayCell" forIndexPath:indexPath];
     playCell.videoLabel.text = @"";
   }
   
   playCell.timeLabel.text = play.time;
   
   if (play.down && play.down.length > 0) {
-    playCell.playLabel.text = [NSString stringWithFormat:@"%@. %@", play.down, play.text];
-  } else {
-    playCell.playLabel.text = play.text;
+    playCell.downLabel.text = play.down;
   }
   
-  return playCell;
+  playCell.playLabel.text = play.text;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -214,6 +246,27 @@
 
 #pragma mark - MPMoviePlayer
 
+- (void) _handleTapVideo:(UITapGestureRecognizer *)gesture
+{
+  CGPoint location = [gesture locationInView:self.tableView];
+  NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
+  SCPlay *play = [self.summary playsForSection:section][row];
+  
+  _moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:play.videoUrl];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(moviePlayBackDidFinish:)
+                                               name:MPMoviePlayerPlaybackDidFinishNotification
+                                             object:_moviePlayer];
+  
+  _moviePlayer.controlStyle = MPMovieControlStyleDefault;
+  _moviePlayer.shouldAutoplay = YES;
+  [self.view addSubview:_moviePlayer.view];
+  [_moviePlayer setFullscreen:YES animated:YES];
+}
+
 - (void) moviePlayBackDidFinish:(NSNotification*)notification {
   MPMoviePlayerController *player = [notification object];
   
@@ -232,6 +285,18 @@
 {
   // Get the new view controller using [segue destinationViewController].
   // Pass the selected object to the new view controller.
+}
+
+#pragma mark - Private
+
+- (SCGameTableViewCell *)_dummyCellForPlay:(SCPlay *)play
+{
+  if (play.team && play.teamIcon) {
+    if (!_dummyCell) {
+      _dummyCell = (SCGameTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"PlayCell"];
+    }
+  }
+  return _dummyCell;
 }
 
 

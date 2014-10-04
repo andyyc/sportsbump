@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSDate *createdAt;
 @property (strong, nonatomic) NSString *createdAtRaw;
 @property (strong, nonatomic) NSString *playId;
+@property (strong, nonatomic) NSNumber *postId;
 
 - (instancetype)initWithJson:(NSDictionary *)jsonDict;
 

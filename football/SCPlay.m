@@ -21,6 +21,7 @@
     _points = [jsonDict[@"points"] intValue];
     _quarter = jsonDict[@"quarter"];
     _time = jsonDict[@"time"];
+    _postId = jsonDict[@"post"] != [NSNull null] ? jsonDict[@"post"] : nil;
     NSString *teamString = jsonDict[@"team"];
     
     if (teamString.length > 0) {

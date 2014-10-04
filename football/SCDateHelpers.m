@@ -39,7 +39,7 @@ NSString *createdTimeAgo(NSDate *createdAt)
     return [NSString stringWithFormat:@"%dm", [dateComponents minute]];
   } else if ([dateComponents second] > 0) {
     return [NSString stringWithFormat:@"%ds", [dateComponents second]];
-  } else if ([dateComponents second] == 0) {
+  } else if ([dateComponents second] <= 0) {
     return @"now";
   }
   

@@ -19,6 +19,7 @@
 @interface SCScoreboardViewController ()
 @property (weak, nonatomic) IBOutlet UIView *dateScrollViewContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
+@property (assign, nonatomic) BOOL hasFetchedDate;
 @property (strong, nonatomic) NSArray *weekChoices;
 @property (strong, nonatomic) NSArray *weekChoiceIds;
 @property (strong, nonatomic) NSMutableArray *dateChoicesViews;
@@ -65,12 +66,16 @@
   if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
     self.automaticallyAdjustsScrollViewInsets = NO;
   }
+  [self _fetchWeekChoices];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self _fetchWeekChoices];
+  if ([self hasFetchedDate]) {
+    // only want to fetch the first time
+    [self _fetchAndReloadScoreboardForDate:[self currentPage]];
+  }
 }
 
 #pragma mark - dateScrollView
@@ -246,6 +251,7 @@
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                     self.scoreboardTableViewController.scoreboard = [[SCScoreboard alloc] initWithGamesArray:jsonDict];
                                     [self.scoreboardTableViewController.tableView reloadData];
+                                    self.hasFetchedDate = YES;
                                   });
                                 } else {
                                   // alert for error saving / updating note

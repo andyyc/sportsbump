@@ -15,11 +15,14 @@
 #import "SCDateHelpers.h"
 #import "SCFeed.h"
 #import "SCFeedStore.h"
+#import "SCPostTableViewController.h"
 
 @interface SCFeedTableViewController ()
 
 @property (nonatomic, strong) SCFeedStore *feedStore;
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayer;
+@property (strong, nonatomic) SCFeedItemTableViewCell *dummyCell;
+@property (strong, nonatomic) SCFeedItemTableViewCell *dummyCellWithImage;
 
 @end
 
@@ -65,6 +68,19 @@
 
 #pragma mark - Table view data source
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  SCPlay *play = self.feedStore.feed.items[indexPath.row];
+  SCFeedItemTableViewCell *dummyCell = [self _dummyCellForPlay:play];
+  
+  [self configureCell:dummyCell forRowAtIndexPath:indexPath];
+  [dummyCell layoutIfNeeded];
+  
+  CGSize size = [dummyCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+  
+  return size.height+1;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
@@ -81,27 +97,23 @@
 {
   SCFeedItemTableViewCell *cell;
   SCPlay *play = self.feedStore.feed.items[indexPath.row];
-
-  if (play.team) {
-    cell = [tableView dequeueReusableCellWithIdentifier:@"FeedItemCellWithImage" forIndexPath:indexPath];
+  
+  if (play.team && play.teamIcon) {
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"FeedItemCellWithImage" forIndexPath:indexPath];
+  } else {
+    cell = [self.tableView dequeueReusableCellWithIdentifier:@"FeedItemCell" forIndexPath:indexPath];
+  }
+  
+  [self configureCell:cell forRowAtIndexPath:indexPath];
+  
+  if (play.team && play.teamIcon) {
     NSString *teamIconURLString = [NSString stringWithFormat:kFormatBaseURL, play.teamIcon];
     [cell.leftImage sd_setImageWithURL:[NSURL URLWithString:teamIconURLString]];
-  } else {
-    cell = [tableView dequeueReusableCellWithIdentifier:@"FeedItemCell" forIndexPath:indexPath];
   }
   
-  // Configure the cell...
-  cell.feedText.text = play.text;
-  if (play.videoUrl) {
-    cell.videoLabel.text = @"🎥";
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTapVideo:)];
-    [cell.videoLabel setUserInteractionEnabled:YES];
-    [cell.videoLabel addGestureRecognizer:tapGestureRecognizer];
-  } else {
-    cell.videoLabel.text = @"";
-  }
-  
-  cell.createdTimeAgo.text = createdTimeAgo(play.createdAt);
+  UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTapVideo:)];
+  [cell.videoLabel setUserInteractionEnabled:YES];
+  [cell.videoLabel addGestureRecognizer:tapGestureRecognizer];
 
   return cell;
 }
@@ -115,6 +127,27 @@
   if (indexPath.row == [self.feedStore.feed.items count] - 1) {
     [self.feedStore fetchNextFeed];
   }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  [self performSegueWithIdentifier:@"FeedToPostSegue" sender:self];
+}
+
+- (void)configureCell:(SCFeedItemTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  SCPlay *play = self.feedStore.feed.items[indexPath.row];
+  
+  // Configure the cell...
+  cell.feedText.text = play.text;
+  if (play.videoUrl) {
+    cell.videoLabel.text = @"🎥";
+  } else {
+    cell.videoLabel.text = @"";
+  }
+  
+  cell.createdTimeAgo.text = createdTimeAgo(play.createdAt);
+ 
 }
 
 #pragma mark - Private
@@ -143,17 +176,31 @@
   [_moviePlayer setFullscreen:YES animated:YES];
 }
 
+- (SCFeedItemTableViewCell *)_dummyCellForPlay:(SCPlay *)play
+{
+  if (play.team && play.teamIcon) {
+    if (!_dummyCellWithImage) {
+      _dummyCellWithImage = (SCFeedItemTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"FeedItemCellWithImage"];
+    }
+    return _dummyCellWithImage;
+  } else {
+    if (!_dummyCell) {
+      _dummyCell = (SCFeedItemTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"FeedItemCell"];
+    }
+    return _dummyCell;
+  }
+}
+
 #pragma mark - MPMoviePlayer
 
 - (void) moviePlayBackDidFinish:(NSNotification*)notification {
-  MPMoviePlayerController *player = [notification object];
   
   [[NSNotificationCenter defaultCenter]
    removeObserver:self
    name:MPMoviePlayerPlaybackDidFinishNotification
-   object:player];
+   object:_moviePlayer];
   
-  [player.view removeFromSuperview];
+  [_moviePlayer.view removeFromSuperview];
 }
 
 /*
@@ -194,16 +241,24 @@
 }
 */
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+  // Get the new view controller using [segue destinationViewController].
+  // Pass the selected object to the new view controller.
+  if ([segue.identifier isEqualToString:@"FeedToPostSegue"]) {
+    SCPostTableViewController *postTableViewController = [segue destinationViewController];
+    
+    NSIndexPath *selectedRow = [self.tableView indexPathForSelectedRow];
+    SCPlay *play = self.feedStore.feed.items[selectedRow.row];
+    postTableViewController.titleText = play.text;
+    postTableViewController.videoUrl = play.videoUrl;
+    postTableViewController.createdDate = play.createdAt;
+    postTableViewController.postId = [play.postId integerValue];
+  }
 }
-*/
 
 #pragma mark - SCFeedStoreDelegate
 

@@ -14,11 +14,11 @@
 
 @implementation SCCommentStore
 
-- (void)fetchCommentsForGameKey:(NSString *)gameKey
+- (void)fetchCommentsForPostId:(NSInteger)postId
 {
   NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration sessionConfigurationWithToken];
   NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
-  NSString *commentsUrl = [NSString stringWithFormat:@"%@?gamekey=%@", COMMENTS_URL, gameKey];
+  NSString *commentsUrl = [NSString stringWithFormat:@"%@?post_id=%@", COMMENTS_URL, @(postId)];
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:commentsUrl]];
   [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   

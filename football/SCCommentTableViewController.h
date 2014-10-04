@@ -10,10 +10,13 @@
 #import "SCCommentStore.h"
 #import "SCGame.h"
 #import "SCCommentBumpStore.h"
+#import "SCCommentThread.h"
 
 @interface SCCommentTableViewController : UITableViewController<SCCommentStoreDelegate, SCCommentBumpStoreDelegate>
 
-@property (nonatomic, strong) SCGame *game;
+@property (strong, nonatomic) SCCommentThread *commentThread;
+@property (assign, nonatomic) NSInteger postId;
+@property (strong, nonatomic) NSString *titleText;
 
 - (void)didFetchComments:(NSArray *)data;
 

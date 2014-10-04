@@ -63,7 +63,6 @@
      
      if (!error && httpResp.statusCode == 200) {
        dispatch_async(dispatch_get_main_queue(), ^{
-         NSLog(@"%@", jsonDict);
          self.summary = [[SCGameSummary alloc] initWithJson:jsonDict];
          [self.tableView reloadData];
        });

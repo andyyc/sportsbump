@@ -37,7 +37,7 @@
   self.parentCommentUsername.text = self.comment.username;
   
   if (self.comment.username) {
-    self.parentCommentPoints.text = [NSString stringWithFormat:@"%d 👊", self.comment.points];
+    self.parentCommentPoints.text = [NSString stringWithFormat:@"%ld 👊", (long)self.comment.points];
   } else {
     self.parentCommentPoints.text = nil;
   }

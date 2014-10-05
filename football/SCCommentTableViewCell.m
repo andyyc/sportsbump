@@ -37,10 +37,10 @@
   
   float indentPoints = self.indentationLevel * 10;
   
-  self.contentView.frame = CGRectMake(indentPoints,
-                                      self.contentView.frame.origin.y,
-                                      self.contentView.frame.size.width - indentPoints,
-                                      self.contentView.frame.size.height);
+  self.cellView.frame = CGRectMake(indentPoints,
+                                      self.cellView.frame.origin.y,
+                                      self.cellView.frame.size.width - indentPoints,
+                                      self.cellView.frame.size.height);
 }
 
 @end

@@ -214,7 +214,7 @@
   
   cell.commentText.text = comment.text;
   cell.username.text = comment.username;
-  cell.points.text = [NSString stringWithFormat:@"%d 👊", comment.points];
+  cell.points.text = [NSString stringWithFormat:@"%ld 👊", (long)comment.points];
   
   if (comment.hasBumped) {
     cell.points.textColor = [UIColor blackColor];

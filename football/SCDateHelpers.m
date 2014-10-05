@@ -28,17 +28,17 @@ NSString *createdTimeAgo(NSDate *createdAt)
   NSDateComponents *dateComponents = [sysCalendar components:unitFlags fromDate:date2  toDate:date1  options:0];
   
   if ([dateComponents year] > 0) {
-    return [NSString stringWithFormat:@"%dy", [dateComponents year]];
+    return [NSString stringWithFormat:@"%ldy", (long)[dateComponents year]];
   } else if ([dateComponents month] > 0) {
-    return [NSString stringWithFormat:@"%dm", [dateComponents month]];
+    return [NSString stringWithFormat:@"%ldm", (long)[dateComponents month]];
   } else if ([dateComponents day] > 0) {
-    return [NSString stringWithFormat:@"%dd", [dateComponents day]];
+    return [NSString stringWithFormat:@"%ldd", (long)[dateComponents day]];
   } else if ([dateComponents hour] > 0) {
-    return [NSString stringWithFormat:@"%dh", [dateComponents hour]];
+    return [NSString stringWithFormat:@"%ldh", (long)[dateComponents hour]];
   } else if ([dateComponents minute] > 0) {
-    return [NSString stringWithFormat:@"%dm", [dateComponents minute]];
+    return [NSString stringWithFormat:@"%ldm", (long)[dateComponents minute]];
   } else if ([dateComponents second] > 0) {
-    return [NSString stringWithFormat:@"%ds", [dateComponents second]];
+    return [NSString stringWithFormat:@"%lds", (long)[dateComponents second]];
   } else if ([dateComponents second] <= 0) {
     return @"now";
   }

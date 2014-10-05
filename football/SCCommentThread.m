@@ -88,7 +88,7 @@
 {
   for (SCComment *comment in comments) {
     [_commentIndex addObject:comment];
-    self.commentIdToCommentIndexMap[comment.commentId] = [NSNumber numberWithInt:_commentIndex.count-1];
+    self.commentIdToCommentIndexMap[comment.commentId] = [NSNumber numberWithLong:_commentIndex.count-1];
     comment.depth = depth;
     [self _buildThreadRecursively:_edges[comment.commentId] depth:depth+1];
   }

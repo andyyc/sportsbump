@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIView *dateScrollViewContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (assign, nonatomic) BOOL hasFetchedDate;
+@property (assign, nonatomic) NSInteger currentWeek;
 @property (strong, nonatomic) NSArray *weekChoices;
 @property (strong, nonatomic) NSArray *weekChoiceIds;
 @property (strong, nonatomic) NSMutableArray *dateChoicesViews;
@@ -39,13 +40,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:UIApplicationWillEnterForegroundNotification
-                                                 object:nil];
-}
-
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -57,16 +51,10 @@
   
   self.navigationItem.title = @"Scores";
   self.dateChoicesViews = [[NSMutableArray alloc] init];
-
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(_willEnterForeground:)
-                                               name:UIApplicationWillEnterForegroundNotification
-                                             object:nil];
   
   if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
     self.automaticallyAdjustsScrollViewInsets = NO;
   }
-  [self _fetchWeekChoices];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -75,15 +63,21 @@
   if ([self hasFetchedDate]) {
     // only want to fetch the first time
     [self _fetchAndReloadScoreboardForDate:[self currentPage]];
+  } else {
+    [self _fetchWeekChoices];
   }
 }
 
 #pragma mark - dateScrollView
 
-- (void)loadVisiblePages {
+- (void)loadVisiblePages
+{
   // First, determine which page is currently visible
-  NSInteger page = [self currentPage];
-  
+  [self loadVisiblePagesAt:[self currentPage]];
+}
+
+- (void)loadVisiblePagesAt:(NSInteger)page
+{
   // Work out which pages you want to load
   NSInteger firstPage = page - 1;
   NSInteger lastPage = page + 1;
@@ -98,6 +92,11 @@
   for (NSInteger i=lastPage+1; i<self.weekChoices.count; i++) {
     [self purgePage:i];
   }
+}
+
+- (void)setCurrentPage:(NSInteger)page {
+  CGFloat pageWidth = self.dateScrollView.frame.size.width;
+  self.dateScrollView.contentOffset =  CGPointMake(pageWidth * page, 0);
 }
 
 - (NSInteger)currentPage {
@@ -203,14 +202,16 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           self.weekChoices = jsonDict[@"week_choices"];
                                           self.weekChoiceIds = jsonDict[@"week_choice_ids"];
+                                          self.currentWeek = [jsonDict[@"current_week"] integerValue];
                                           CGSize dateScrollViewSize = self.dateScrollView.frame.size;
                                           self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
                                           
                                           for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
                                             [self.dateChoicesViews addObject:[NSNull null]];
                                           }
+                                          [self setCurrentPage:self.currentWeek+5];
                                           [self loadVisiblePages];
-                                          [self _fetchAndReloadScoreboardForDate:0];
+                                          [self _fetchAndReloadScoreboardForDate:self.currentWeek+5];
                                         });
                                       } else {
                                         // alert for error saving / updating note
@@ -261,11 +262,6 @@
                               }];
   
   [self.scoreboardDataTask resume];
-}
-
-- (void)_willEnterForeground:(NSNotification *)notification
-{
-  [self _fetchWeekChoices];
 }
 
 @end

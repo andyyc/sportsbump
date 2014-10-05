@@ -81,8 +81,8 @@
   UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
   
     // Configure the cell...
-  int section = indexPath.section;
-  int row = indexPath.row;
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
   
   if ([self _isLoggedIn]) {
     if (section == 0) {
@@ -110,8 +110,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  int section = indexPath.section;
-  int row = indexPath.row;
+  NSInteger section = indexPath.section;
+  NSInteger row = indexPath.row;
 
   if ([self _isLoggedIn]) {
     if (section == 1) {

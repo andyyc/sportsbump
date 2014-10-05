@@ -16,5 +16,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *commentText;
 @property (weak, nonatomic) IBOutlet UIView *usernameView;
 @property (weak, nonatomic) IBOutlet UILabel *timePosted;
+@property (weak, nonatomic) IBOutlet UIView *cellView;
 
 @end

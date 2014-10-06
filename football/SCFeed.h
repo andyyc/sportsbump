@@ -15,5 +15,7 @@
 
 - (instancetype)initWithJson:(NSArray *)jsonArray;
 - (NSArray *)addJson:(NSArray *)jsonArray;
+- (NSArray *)addJson:(NSArray *)jsonArray atIndex:(NSUInteger)index;
+- (NSUInteger)count;
 
 @end

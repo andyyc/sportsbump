@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *feedText;
 @property (weak, nonatomic) IBOutlet UILabel *videoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createdTimeAgo;
+@property (weak, nonatomic) IBOutlet UIView *detailRightColumnView;
 
 @end

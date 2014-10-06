@@ -111,9 +111,11 @@
     [cell.leftImage sd_setImageWithURL:[NSURL URLWithString:teamIconURLString]];
   }
   
-  UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTapVideo:)];
-  [cell.videoLabel setUserInteractionEnabled:YES];
-  [cell.videoLabel addGestureRecognizer:tapGestureRecognizer];
+  if (play.videoUrl) {
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTapVideo:)];
+    [cell.detailRightColumnView setUserInteractionEnabled:YES];
+    [cell.detailRightColumnView addGestureRecognizer:tapGestureRecognizer];
+  }
 
   return cell;
 }
@@ -125,7 +127,7 @@
   // check if indexPath.row is last row
   // Perform operation to load new Cell's.
   if (indexPath.row == [self.feedStore.feed.items count] - 1) {
-    [self.feedStore fetchNextFeed];
+    [self.feedStore fetchOlderFeed];
   }
 }
 

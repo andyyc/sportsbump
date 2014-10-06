@@ -12,15 +12,24 @@
 #import "SCPlay.h"
 
 #define URL_FEED kBaseURL @"/api/feed"
-#define URL_NEXT_FEED kBaseURL @"/api/feed?last_created_at=%@"
+#define URL_OLDER_FEED kBaseURL @"/api/feed?last_created_at=%@"
+#define URL_NEWER_FEED kBaseURL @"/api/feed?most_recent_created_at=%@"
 
 @implementation SCFeedStore
 
 - (void)fetchFeed
 {
   SCURLSession *session = [[SCURLSession alloc] init];
-  NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL_FEED]];
+  NSURL *requestURL;
   
+  if ([_feed count] > 0) {
+    SCPlay *firstPlay = _feed.items.firstObject;
+    requestURL = [NSURL URLWithString:[NSString stringWithFormat:URL_NEWER_FEED, firstPlay.createdAtRaw]];
+  } else {
+    requestURL = [NSURL URLWithString:URL_FEED];
+  }
+  
+  NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
   NSURLSessionDataTask *dataTask = [session dataTaskWithAuthenticatedRequest:request
                                                            completionHandler:^(NSData *data,
                                                                                NSURLResponse *response,
@@ -36,7 +45,13 @@
                                       if (!error && httpResp.statusCode == 200) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           // End the refreshing
-                                          _feed = [[SCFeed alloc] initWithJson:jsonArray];
+                                          if (_feed) {
+                                            NSArray *insertedIndices = [_feed addJson:jsonArray atIndex:0];
+                                            [self.delegate feedStore:self didFinishFetchingNextInsertedIndices:insertedIndices];
+                                          } else {
+                                            _feed = [[SCFeed alloc] initWithJson:jsonArray];
+                                          }
+                                          
                                           [self.delegate didFinishFetchingFeed:self];
                                         });
                                       } else {
@@ -51,7 +66,7 @@
   [dataTask resume];
 }
 
-- (void)fetchNextFeed
+- (void)fetchOlderFeed
 {
   SCPlay *play = [self.feed.items lastObject];
   
@@ -60,7 +75,7 @@
   }
   
   SCURLSession *session = [[SCURLSession alloc] init];
-  NSURL *nextFeed = [NSURL URLWithString:[NSString stringWithFormat:URL_NEXT_FEED, play.createdAtRaw]];
+  NSURL *nextFeed = [NSURL URLWithString:[NSString stringWithFormat:URL_OLDER_FEED, play.createdAtRaw]];
   NSURLRequest *request = [NSURLRequest requestWithURL:nextFeed];
   
   NSURLSessionDataTask *dataTask = [session dataTaskWithAuthenticatedRequest:request

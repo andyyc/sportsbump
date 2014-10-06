@@ -22,26 +22,33 @@
   return self;
 }
 
-- (NSArray *)addJson:(NSArray *)jsonArray
+- (NSUInteger)count
 {
-  return [self _addResultsJsonToItems:jsonArray];
+  return [_items count];
 }
 
-- (NSArray *)_addResultsJsonToItems:(NSArray *)results
+- (NSArray *)addJson:(NSArray *)jsonArray
+{
+  return [self addJson:jsonArray atIndex:_items.count];
+}
+
+- (NSArray *)addJson:(NSArray *)jsonArray atIndex:(NSUInteger)index
 {
   NSMutableArray *insertedIndices = [[NSMutableArray alloc] init];
   
-  for (NSDictionary *jsonPlay in results) {
+  for (NSDictionary *jsonPlay in jsonArray) {
     SCPlay *play = [[SCPlay alloc] initWithJson:jsonPlay];
     
     if (_itemIdMapToItem[play.playId] == nil) {
-      [insertedIndices addObject:@(_items.count)];
-      [_items addObject:play];
+      [_items insertObject:play atIndex:index];
       _itemIdMapToItem[play.playId] = play;
+      [insertedIndices addObject:@(index)];
+      index++;
     }
   }
   
   return insertedIndices;
 }
+
 
 @end

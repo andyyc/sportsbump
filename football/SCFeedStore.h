@@ -25,6 +25,6 @@
 @property (nonatomic, weak) id <SCFeedStoreDelegate> delegate;
 
 - (void)fetchFeed;
-- (void)fetchNextFeed;
+- (void)fetchOlderFeed;
 
 @end

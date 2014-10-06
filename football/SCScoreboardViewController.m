@@ -202,16 +202,16 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           self.weekChoices = jsonDict[@"week_choices"];
                                           self.weekChoiceIds = jsonDict[@"week_choice_ids"];
-                                          self.currentWeek = [jsonDict[@"current_week"] integerValue];
+                                          self.currentWeek = [jsonDict[@"current_week"] integerValue] - 1;
                                           CGSize dateScrollViewSize = self.dateScrollView.frame.size;
                                           self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
                                           
                                           for (NSInteger i = 0; i < self.weekChoices.count; ++i) {
                                             [self.dateChoicesViews addObject:[NSNull null]];
                                           }
-                                          [self setCurrentPage:self.currentWeek+5];
+                                          [self setCurrentPage:self.currentWeek];
                                           [self loadVisiblePages];
-                                          [self _fetchAndReloadScoreboardForDate:self.currentWeek+5];
+                                          [self _fetchAndReloadScoreboardForDate:self.currentWeek];
                                         });
                                       } else {
                                         // alert for error saving / updating note

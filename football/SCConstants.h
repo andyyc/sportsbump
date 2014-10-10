@@ -9,7 +9,7 @@
 #ifndef football_SCConstants_h
 #define football_SCConstants_h
 
-#if !DEBUG
+#if DEBUG
 
 #define kBaseURL @"http://localhost:8888"
 

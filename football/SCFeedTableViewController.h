@@ -14,6 +14,6 @@
 - (void)didFinishFetchingFeed:(SCFeedStore *)feedStore;
 - (void)didFailFetchingFeed:(SCFeedStore *)feedStore;
 
-- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingNextInsertedIndices:(NSArray *)insertedIndices;
+- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingFeedInsertedIndices:(NSArray *)insertedIndices;
 
 @end

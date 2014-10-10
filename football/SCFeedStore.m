@@ -45,13 +45,18 @@
                                       if (!error && httpResp.statusCode == 200) {
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           // End the refreshing
+                                          
                                           if (_feed) {
                                             NSArray *insertedIndices = [_feed addJson:jsonArray atIndex:0];
-                                            [self.delegate feedStore:self didFinishFetchingNextInsertedIndices:insertedIndices];
-                                          } else {
-                                            _feed = [[SCFeed alloc] initWithJson:jsonArray];
+                                            
+                                            if ([insertedIndices count] < [jsonArray count]) {
+                                              // this means there was overlap, if no overlap, reload the entire feed
+                                              [self.delegate feedStore:self didFinishFetchingFeedInsertedIndices:insertedIndices];
+                                              return;
+                                            }
                                           }
                                           
+                                          _feed = [[SCFeed alloc] initWithJson:jsonArray];
                                           [self.delegate didFinishFetchingFeed:self];
                                         });
                                       } else {
@@ -94,7 +99,7 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           // End the refreshing
                                           NSArray *insertedIndices = [_feed addJson:jsonArray];
-                                          [self.delegate feedStore:self didFinishFetchingNextInsertedIndices:insertedIndices];
+                                          [self.delegate feedStore:self didFinishFetchingFeedInsertedIndices:insertedIndices];
                                         });
                                       } else {
                                         // alert for error saving

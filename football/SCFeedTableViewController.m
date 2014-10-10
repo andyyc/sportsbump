@@ -266,8 +266,8 @@
 
 - (void)didFinishFetchingFeed:(SCFeedStore *)feedStore
 {
-  [self.refreshControl endRefreshing];
   [self.tableView reloadData];
+  [self.refreshControl endRefreshing];
 }
 
 - (void)didFailFetchingFeed:(SCFeedStore *)feedStore
@@ -275,7 +275,7 @@
   [self.refreshControl endRefreshing];
 }
 
-- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingNextInsertedIndices:(NSArray *)insertedIndices
+- (void)feedStore:(SCFeedStore *)feedStore didFinishFetchingFeedInsertedIndices:(NSArray *)insertedIndices
 {
   NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
   
@@ -284,8 +284,10 @@
   }
   
   [self.tableView beginUpdates];
-  [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationBottom];
+  [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
   [self.tableView endUpdates];
+  
+  [self.refreshControl endRefreshing];
 }
 
 @end

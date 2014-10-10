@@ -202,7 +202,7 @@
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                           self.weekChoices = jsonDict[@"week_choices"];
                                           self.weekChoiceIds = jsonDict[@"week_choice_ids"];
-                                          self.currentWeek = [jsonDict[@"current_week"] integerValue] - 1;
+                                          self.currentWeek = MAX([jsonDict[@"current_week"] integerValue] - 1, 0);
                                           CGSize dateScrollViewSize = self.dateScrollView.frame.size;
                                           self.dateScrollView.contentSize = CGSizeMake(dateScrollViewSize.width * self.weekChoices.count, dateScrollViewSize.height);
                                           
